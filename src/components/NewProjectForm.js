@@ -1,6 +1,8 @@
 import React from 'react';
+import axios from 'axios';
 import { BrowserRouter as Router, Link, Redirect, Route, Switch } from 'react-router-dom';
 import Project from './Project';
+import ProjectOrganizationShow from './ProjectOrganizationShow';
 
 class NewProjectForm extends React.Component {
 
@@ -8,14 +10,15 @@ class NewProjectForm extends React.Component {
     super();
     this.state = {
       newProjectForm: {
-        name: '',
-        streetAddress: '',
+        project_name: '',
+        street_address: '',
         city: '',
         state: '',
-        zipCode: '',
+        zip_code: '',
         description: ''
       },
-      formSubmitted: false
+      formSubmitted: false,
+      createdProjectId: null
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -30,36 +33,29 @@ class NewProjectForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    const formText = `?newProjectForm[fieldName]=${this.state.newProjectForm}`
-    fetch('http://localhost:8181/organizations/1' + formText, {
-      method: 'POST'
+    axios.post('http://localhost:8181/projects', {project: this.state.newProjectForm, organization_id: this.props.organizationId})
+    .then(({data}) => {
+      const newProjectForm = Object.assign({}, {...this.state.newProjectForm}, data)
+      this.setState({newProjectForm, formSubmitted: true})
     })
-    .then(response => response.json())
-    .then(data => {
-      const newProjectForm = {...this.state.newProjectForm}
-      newProjectForm.push(data)
-      this.setState({newProjectForm})
-      this.setState({formSubmitted: true})
-    })
-
   }
 
   render() {
-    if(this.props.displayNewProjectForm === false){
+    if(!this.props.displayNewProjectForm){
       return (
         <button onClick={this.props.toggleProjectFormState}>
-          Add New Project
+          Create New Project
         </button>
-    )} else if(this.props.displayNewProjectForm === true && this.state.formSubmitted === false) {
+    )} else if(this.props.displayNewProjectForm && !this.state.formSubmitted) {
       return (
         <form onSubmit={this.handleSubmit}>
           <label>
             Name:
-            <input type="text" value={this.state.newProjectForm.name} onChange={(e) => this.handleChange(e, "name")} />
+            <input type="text" value={this.state.newProjectForm.project_name} onChange={(e) => this.handleChange(e, "project_name")} />
           </label>
           <label>
             Street Address:
-            <input type="text" value={this.state.newProjectForm.streetAddress} onChange={(e) => this.handleChange(e, "streetAddress")} />
+            <input type="text" value={this.state.newProjectForm.street_address} onChange={(e) => this.handleChange(e, "street_address")} />
           </label>
           <label>
             City:
@@ -71,7 +67,7 @@ class NewProjectForm extends React.Component {
           </label>
           <label>
             Zip Code:
-            <input type="text" pattern="[0-9]{5}" title="Five digit zip code" value={this.state.newProjectForm.zipCode} onChange={(e) => this.handleChange(e, "zipCode")} />
+            <input type="text" pattern="[0-9]{5}" title="Five digit zip code" value={this.state.newProjectForm.zip_code} onChange={(e) => this.handleChange(e, "zip_code")} />
           </label>
           <label>
             Description:
@@ -81,14 +77,16 @@ class NewProjectForm extends React.Component {
         </form>
         )
       }
-      if(this.state.formSubmitted === true) {
-        {alert('some shit')}
+      if(this.state.formSubmitted) {
         return (
-          <Redirect to="/organizations/1/projects/1" />
+          <Redirect to={`/organizations/${this.props.organizationId}/projects/${this.state.newProjectForm.id}`} />
         )
       }
-
-      return (<div>aksdfjklj</div>)
+    <div>
+      <ProjectOrganizationShow
+        handleChange={this.handleChange}
+      />
+    </div>
   }
 }
 
