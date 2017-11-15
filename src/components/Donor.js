@@ -24,7 +24,7 @@ class Donor extends React.Component {
         categories: [],
         zipcode: "",
         events: [],
-        type: []
+        donationType: []
       },
     }
 
@@ -194,7 +194,12 @@ class Donor extends React.Component {
     const that = this
     console.log("we are here")
     axios.post('http://localhost:8181/filters', {filters: that.state.filters})
-    .then(data => console.log(data))
+    .then(function(response) {
+      const projects = response.data.projects
+      const organizations =response.data.organizations
+      that.setState({projects})
+      that.setState({organizations})
+    })
   }
 
   render() {
