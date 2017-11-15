@@ -2,33 +2,27 @@ import React from 'react';
 import { Redirect } from 'react-router'
 import axios from 'axios';
 
-class DonorRegistration extends React.Component {
+class OrganizationRegistration extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      first_name: '',
-      last_name:  '',
-      zip_code:  '',
+      tax_code:  '',
       email: '',
+      category: '',
       password: '',
       registrationSuccessful: false
     };
-    this.handleFirstNameChange = this.handleFirstNameChange.bind(this)
-    this.handleLastNameChange = this.handleLastNameChange.bind(this)
+    this.handleTaxCodeChange = this.handleTaxCodeChange.bind(this)
     this.handleZipcodeChange = this.handleZipcodeChange.bind(this)
     this.handleEmailChange = this.handleEmailChange.bind(this)
+    this.handleCategoryChange = this.handleCategoryChange.bind(this)
     this.handlePasswordChange = this.handlePasswordChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-    handleFirstNameChange(event) {
+    handleTaxCodeChange(event) {
     this.setState({
-      first_name: event.target.value})
-  }
-
-    handleLastNameChange(event) {
-    this.setState({
-      last_name: event.target.value})
+      tax_code: event.target.value})
   }
 
     handleZipcodeChange(event) {
@@ -41,6 +35,11 @@ class DonorRegistration extends React.Component {
       email: event.target.value})
   }
 
+    handleCategoryChange(event) {
+    this.setState({
+      category: event.target.value})
+  }
+
     handlePasswordChange(event) {
     this.setState({
       password: event.target.value})
@@ -48,32 +47,26 @@ class DonorRegistration extends React.Component {
 
   handleSubmit(event) {
       event.preventDefault()
-      axios.post('http://localhost:8181/donors', {donor: this.state})
+      axios.post('http://localhost:8181/organizations', {donor: this.state})
       .then(({data}) => {
         console.log(data)
-        this.setState({donor: data, registrationSuccessful: true})
+        this.setState({organizaiton: data, registrationSuccessful: true})
       })
     }
 
   render() {
     if (this.state.registrationSuccessful) {
-      return <Redirect to="/donors"/>
+      return <Redirect to="/organizations/:id"/>
     } else {
       return (
         <div>
-          <h2>Donor Registration</h2>
+          <h2>Organization Registration</h2>
           <form onSubmit= { this.handleSubmit}>
             <input
-              placeholder= {'Enter first name'}
+              placeholder='Enter tax code'
               type="text"
-              value={this.state.first_name}
-              onChange={this.handleFirstNameChange} >
-            </input>
-            <input
-              placeholder='Enter last name'
-              type="text"
-              value={this.state.last_name}
-              onChange={this.handleLastNameChange} >
+              value={this.state.tax_code}
+              onChange={this.handleTaxCodeChange} >
             </input>
             <input
               placeholder='Enter your zipcode'
@@ -86,6 +79,12 @@ class DonorRegistration extends React.Component {
               type="email"
               value={this.state.email}
               onChange={this.handleEmailChange} >
+            </input>
+            <input
+              placeholder='Enter Category'
+              type="Category"
+              value={this.state.category}
+              onChange={this.handleCategoryChange} >
             </input>
             <input
               placeholder ='Enter password'
@@ -105,4 +104,4 @@ class DonorRegistration extends React.Component {
   }
 }
 
-export default DonorRegistration
+export default OrganizationRegistration
