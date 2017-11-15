@@ -59,6 +59,7 @@ class Organization extends React.Component {
 
         <ProjectOrganizationShow
           toggleProjectFormState={this.toggleProjectFormState}
+          displayNewProjectForm={this.state.displayNewProjectForm}
         />
       </div>
     );

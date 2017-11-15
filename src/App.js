@@ -26,7 +26,7 @@ class App extends React.Component {
             <Route exact path="/" component={Home} />
             <Route exact path="/donors" component={Donor} />
             <Route exact path="/organizations/login" component={OrganizationLogin}/>
-            <Route path="/organizations/:id/projects/:id" component={ProjectOrganizationShow} />
+            <Route exact path="/organizations/:organization_id/projects/:project_id" component={ProjectOrganizationShow} />
             <Route path="/organizations/:id" component={Organization} />
             <Route path="/projects/:id" component={ProjectDisp} />
             <Route exact path="/image_upload" component={ImageUpload} />
