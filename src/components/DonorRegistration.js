@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router'
 import axios from 'axios';
 
 class DonorRegistration extends React.Component {
@@ -9,7 +10,8 @@ class DonorRegistration extends React.Component {
       last_name:  '',
       zip_code:  '',
       email: '',
-      password: ''
+      password: '',
+      registrationSuccessful: false
     };
     this.handleFirstNameChange = this.handleFirstNameChange.bind(this)
     this.handleLastNameChange = this.handleLastNameChange.bind(this)
@@ -49,12 +51,15 @@ class DonorRegistration extends React.Component {
       axios.post('http://localhost:8181/donors', {donor: this.state})
       .then(({data}) => {
         console.log(data)
-        this.setState({donor: data})
+        this.setState({donor: data, registrationSuccessful: true})
       })
     }
 
   render() {
-    return (
+    if (this.state.registrationSuccessful) {
+      return <Redirect to="/donors"/>
+    } else {
+      return (
         <div>
           <h2>Donor Registration</h2>
           <form onSubmit= { this.handleSubmit}>
@@ -95,7 +100,8 @@ class DonorRegistration extends React.Component {
             </button>
           </form>
         </div>
-    )
+      )
+    }
   }
 }
 
