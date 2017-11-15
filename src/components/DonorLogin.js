@@ -69,6 +69,16 @@ class DonorLogin extends React.Component {
             onChange={this.handlePasswordChange} >
           </input>
           <button
+            type = 'Guest'
+            disabled = {!this.state.email}>
+              Continue as Guest
+          </button>
+          <button
+            type = 'Register'
+            disabled = {!this.state.email}>
+              Register
+          </button>
+          <button
             type='submit'
             disabled={!this.state.email}>
               Submit

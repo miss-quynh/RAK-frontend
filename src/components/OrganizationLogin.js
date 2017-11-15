@@ -48,6 +48,16 @@ class OrganizationLogin extends React.Component {
             disabled = {!this.state.email}>
               Submit
           </button>
+          <button
+            type = 'Guest'
+            disabled = {!this.state.email}>
+              Continue as Guest
+          </button>
+          <button
+            type = 'Register'
+            disabled = {!this.state.email}>
+              Register
+          </button>
         </form>
       </div>
       )

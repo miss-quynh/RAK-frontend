@@ -6,8 +6,8 @@ class Home extends React.Component {
     return (
       <div className="options-container">
         <ul>
-          <li><Link className="options-routes" to="/donors">Donor</Link></li>
-          <li><Link className="options-routes" to="/organizations">Organization</Link></li>
+          <li><Link className="options-routes" to="/donors/login">Donor</Link></li>
+          <li><Link className="options-routes" to="/organizations/login">Organization</Link></li>
         </ul>
       </div>
     );
