@@ -1,7 +1,6 @@
 import React from 'react';
 import {Checkbox, CheckboxGroup} from 'react-checkbox-group';
 
-import Filter from './Filter';
 import Project from './Project';
 import OrganizationDonor from './OrganizationDonor';
 import axios from 'axios';
@@ -34,9 +33,10 @@ class Donor extends React.Component {
     this.conditionalTabShow = this.conditionalTabShow.bind(this)
     this.handleProjectsClick = this.handleProjectsClick.bind(this)
     this.handleOrganizationsClick = this.handleOrganizationsClick.bind(this)
+    this.handleFilterClick = this.handleFilterClick.bind(this)
+    this.handleFilterSubmit = this.handleFilterSubmit.bind(this)
     this.filterConditional = this.filterConditional.bind(this)
     this.categoriesChanged = this.categoriesChanged.bind(this)
-    this.handleFilterClick = this.handleFilterClick.bind(this)
     this.locationChanged = this.locationChanged.bind(this)
     this.eventsChanged = this.eventsChanged.bind(this)
     this.donationTypeChanged = this.donationTypeChanged.bind(this)
@@ -160,7 +160,6 @@ class Donor extends React.Component {
     let filters = this.state.filters
     filters.categories = newCategories
     this.setState({filters})
-    console.log(this.state)
   }
 
   locationChanged(newLocation){
@@ -189,11 +188,13 @@ class Donor extends React.Component {
     filterView = filter}
 
     this.setState({filterView})
-    console.log(this.state.filterView)
   }
 
-  handleFilterSubmit() {
-
+  handleFilterSubmit(event) {
+    const that = this
+    console.log("we are here")
+    axios.post('http://localhost:8181/filters', {filters: that.state.filters})
+    .then(data => console.log(data))
   }
 
   render() {
@@ -208,7 +209,7 @@ class Donor extends React.Component {
           <button onClick={ () => this.handleFilterClick('Location')}>Location</button>
           <button onClick={ () => this.handleFilterClick('Event')}>Event</button>
           <button onClick={ () => this.handleFilterClick('Type of Donation')}>Donation Type</button>
-          <button onSubmit={this.handleFilterSubmit}>Search</button>
+          <button onClick={this.handleFilterSubmit}>Search</button>
         </div>
         <div className="filter-categories">
           {this.filterConditional()}
