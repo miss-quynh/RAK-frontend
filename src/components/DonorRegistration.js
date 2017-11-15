@@ -5,13 +5,11 @@ class DonorRegistration extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      donor: {
-        first_name: '',
-        last_name:  '',
-        zipcode:  '',
-        email: '',
-        password: ''
-      }
+      first_name: '',
+      last_name:  '',
+      zip_code:  '',
+      email: '',
+      password: ''
     };
     this.handleFirstNameChange = this.handleFirstNameChange.bind(this)
     this.handleLastNameChange = this.handleLastNameChange.bind(this)
@@ -23,17 +21,17 @@ class DonorRegistration extends React.Component {
 
     handleFirstNameChange(event) {
     this.setState({
-      email: event.target.value})
+      first_name: event.target.value})
   }
 
     handleLastNameChange(event) {
     this.setState({
-      email: event.target.value})
+      last_name: event.target.value})
   }
 
     handleZipcodeChange(event) {
     this.setState({
-      password: event.target.value})
+      zip_code: event.target.value})
   }
 
     handleEmailChange(event) {
@@ -48,7 +46,7 @@ class DonorRegistration extends React.Component {
 
   handleSubmit(event) {
       event.preventDefault()
-      axios.post('http://localhost:8181/donor', {donor: this.state.donor})
+      axios.post('http://localhost:8181/donors', {donor: this.state})
       .then(({data}) => {
         console.log(data)
         this.setState({donor: data})
@@ -63,36 +61,36 @@ class DonorRegistration extends React.Component {
             <input
               placeholder= {'Enter first name'}
               type="text"
-              value={this.props.first_name}
+              value={this.state.first_name}
               onChange={this.handleFirstNameChange} >
             </input>
             <input
               placeholder='Enter last name'
               type="text"
-              value={this.props.last_name}
+              value={this.state.last_name}
               onChange={this.handleLastNameChange} >
             </input>
             <input
               placeholder='Enter your zipcode'
               type="integer"
-              value={this.props.zipcode}
+              value={this.state.zipcode}
               onChange={this.handleZipcodeChange} >
             </input>
             <input
               placeholder='Enter email'
               type="email"
-              value={this.props.email}
+              value={this.state.email}
               onChange={this.handleEmailChange} >
             </input>
             <input
               placeholder ='Enter password'
               type="password"
-              value={this.props.password}
+              value={this.state.password}
               onChange={this.handlePasswordChange} >
             </input>
             <button
               type='submit'
-              disabled={!this.props.email}>
+              disabled={!this.state.email}>
                 Submit
             </button>
           </form>
