@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 
 import './App.css';
-// import './Home.css';
+import './Home.css';
 import Home from './components/Home';
 import Donor from './components/Donor';
 import Organization from './components/Organization';
