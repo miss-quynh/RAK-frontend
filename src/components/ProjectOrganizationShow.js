@@ -1,8 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import Item from './Item';
-import Organization from './Organization';
-import NewProjectForm from './NewProjectForm';
 
 class ProjectOrganizationShow extends React.Component {
 
@@ -19,13 +17,22 @@ class ProjectOrganizationShow extends React.Component {
         description: ''
       },
       items: [],
-      itemsOptions: []
+      itemsOptions: [],
+      newDonation: {
+        quantity_requested: '',
+        quantity_received: '',
+        project_id: this.props.match.params.project_id
+      },
+      typeName: ''
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.projectsCall = this.projectsCall.bind(this)
     this.organizationsCall = this.organizationsCall.bind(this)
     this.donationTypesCall = this.donationTypesCall.bind(this)
+    this.updateQuantityRequested = this.updateQuantityRequested.bind(this)
+    this.updateQuantityReceived = this.updateQuantityReceived.bind(this)
+    this.updateTypeName = this.updateTypeName.bind(this)
   }
 
   projectsCall() {
@@ -62,14 +69,33 @@ class ProjectOrganizationShow extends React.Component {
     this.donationTypesCall();
   }
 
+  updateQuantityRequested(event) {
+    this.setState({
+      newDonation: Object.assign({}, this.state.newDonation, {quantity_requested: event.target.value})
+    })
+  }
+
+  updateQuantityReceived(event) {
+    this.setState({
+      newDonation: Object.assign({}, this.state.newDonation, {quantity_received: event.target.value})
+    })
+  }
+
+  updateTypeName(event) {
+    this.setState({
+      typeName: event.target.value
+    })
+  }
+
   handleSubmit(event) {
     event.preventDefault()
-    axios.post('http://localhost:8181/donations', {items: this.state.items, project_id: this.props.match.params.project_id})
+    axios.post('http://localhost:8181/donations', {donation: this.state.newDonation, type_name: this.state.typeName})
     .then(({data}) => {
-      console.log(data.data)
-      const thing = 'stuff'
-      this.setState({items: data})
+      let items = this.state.items
+      items.push({item: data.donation_type.type_name, quantity_received: data.donation.quantity_received, quantity_requested: data.donation.quantity_requested})
+      this.setState({items})
     })
+    .catch((error) => {console.log('Error in creating a new item.', error)})
   }
 
   render() {
@@ -95,16 +121,17 @@ class ProjectOrganizationShow extends React.Component {
                 Add
               </button>
 
-              <select>
+              <select onChange={this.updateTypeName}>
+                <option value="">Select Donation Type</option>
                 {this.state.itemsOptions.map((option) => {
                   return (
-                    <option value="{option}">{option}</option>
+                    <option value={option}>{option}</option>
                   )
                 })}
               </select>
 
-              <input type="number" placeholder="Quantity needed" value={this.state.newProjectInfo.quantity_requested} />
-              <input type="number" placeholder="Quantity received" value={this.state.newProjectInfo.quantity_received} />
+              <input onChange={this.updateQuantityRequested} type="number" placeholder="Quantity needed" value={this.state.newProjectInfo.quantity_requested} />
+              <input onChange={this.updateQuantityReceived}type="number" placeholder="Quantity received" value={this.state.newProjectInfo.quantity_received} />
 
               {this.state.items.map((item) => {
                 return (
