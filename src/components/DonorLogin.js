@@ -1,16 +1,21 @@
 import React from 'react';
 import axios from 'axios';
+import { Redirect } from 'react-router'
+
 
 class DonorLogin extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      auth_token: window.localStorage.getItem('auth_token')
     };
+
     this.handleEmailChange = this.handleEmailChange.bind(this)
     this.handlePasswordChange = this.handlePasswordChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+
   }
 
   handleEmailChange(event) {
@@ -26,31 +31,29 @@ class DonorLogin extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     var currentContext = this;
-    var authDetails = {
 
-        auth: {
-          email: this.state.email,
-          password: this.state.password
-        }
-    }
      var postData = JSON.stringify({
       auth: {
         email: this.state.email, password: this.state.password
         }
       });
 
-    this.serverRequest = axios.post("http://localhost:3000/donor_token", postData, {
+    this.serverRequest = axios.post("http://localhost:8181/donor_token", postData, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       }
-    }
-    )
-      .then(response => console.log(response.data))
-      .catch(error => console.log("Donor Login Error: ", error.response))
+    })
+    .then(response => {
+      window.localStorage.setItem('auth_token', response.data.jwt)
+      currentContext.setState({auth_token: response.data.jwt})
+      // console.log(response.data.jwt)
+    })
+    .catch(error => console.log("Donor Login Error: ", error.response))
   }
 
   render() {
+    if(this.state.auth_token !== undefined) { return <Redirect to="/donors"/> }
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
