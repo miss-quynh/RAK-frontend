@@ -22,6 +22,7 @@ class App extends React.Component {
         <div>
           <header className="navigation-bar">
             <Link className="navigation-text" to="/"><h1>RÄK</h1></Link>
+            
           </header>
 
           <Switch>

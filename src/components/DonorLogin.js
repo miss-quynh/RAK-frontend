@@ -53,7 +53,7 @@ class DonorLogin extends React.Component {
   }
 
   render() {
-    if(this.state.auth_token !== undefined) { return <Redirect to="/donors"/> }
+    if(this.state.auth_token !== null) { return <Redirect to="/donors"/> }
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
