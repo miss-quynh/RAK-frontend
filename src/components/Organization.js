@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import Project from './Project';
 import NewProjectForm from './NewProjectForm';
-import ProjectOrganizationShow from './ProjectOrganizationShow';
 
 class Organization extends React.Component {
 
@@ -10,8 +9,11 @@ class Organization extends React.Component {
     super();
     this.state = {
       projects: [],
-      name: '',
-      mission_statement: '',
+      organizationInfo: {
+        name: '',
+        mission_statement: '',
+        logo: ''
+      },
       displayNewProjectForm: false
     };
 
@@ -24,8 +26,7 @@ class Organization extends React.Component {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data)
-      this.setState({ projects: data['projects'], name: data.organization.organization_name, mission_statement: data.organization.mission_statement })
+      this.setState({ projects: data.projects, name: data.organization.organization_name, mission_statement: data.organization.mission_statement, logo: data.organization.organization_logo })
     })
   }
 
@@ -37,14 +38,19 @@ class Organization extends React.Component {
 
   render() {
     return (
-      <div className='Organization-show-container'>
-        <h1>
-          <span className="organization-name-header">{this.state.name}</span>
-        </h1>
+      <div className="organization-show-container">
+        <div className="organization-info">
+          <div className="organization-logo">
+            <span>{this.state.logo}</span>
+          </div>
+          <h1>
+            <span className="organization-name-header">{this.state.name}</span>
+          </h1>
 
-        <p className="organization-mission-statement">
-          {this.state.mission_statement}
-        </p>
+          <p className="organization-mission-statement">
+            {this.state.mission_statement}
+          </p>
+        </div>
 
         <NewProjectForm
           organizationId={this.props.match.params.id}
@@ -53,8 +59,12 @@ class Organization extends React.Component {
         />
 
         <ul>
-          {this.state.projects.map( project => <li><Link to={`/projects/${project.id}`}>{project.project_name}</Link></li>)
+          {this.state.projects.map((project) => {
+            return (
+              <li><Link to={`/projects/${project.id}`}>{project.project_name}</Link></li>
+            )
           }
+          )}
         </ul>
       </div>
     );
