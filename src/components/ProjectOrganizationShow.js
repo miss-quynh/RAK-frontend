@@ -102,7 +102,7 @@ class ProjectOrganizationShow extends React.Component {
     .then(({data}) => {
       let donations = this.state.donations
       donations.push({item: data.item.item_name, quantity_received: data.donation.quantity_received, quantity_requested: data.donation.quantity_requested})
-      this.setState({donations})
+      this.setState({donations, itemNameInput: '', newProjectInfo: {quantity_requested: '', quantity_received: ''}})
     })
     .catch((error) => {console.log('Error in creating a new item.', error)})
   }
