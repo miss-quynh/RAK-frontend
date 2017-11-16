@@ -54,31 +54,31 @@ class OrganizationLogin extends React.Component {
   render() {
     return (
       <div>
-        <form onSubmit = {this.handleSubmit}>
-          <label htmlFor = 'email'> {this.props.label} </label>
-          <input
-            placeholder = 'Enter email'
-            type = 'email'
-            value = {this.state.email}
-            onChange = {this.handleChange}
-            ></input>
-          <input
-            placeholder = 'Enter password'
-            type = 'password'
-            value = {this.state.password}
-            onChange = {this.handleChange}
-            ></input>
-          <button
-            type = 'submit'
-            disabled = {!this.state.email}>
-              Submit
-          </button>
-          <button
-            type = 'Register'
-            disabled = {!this.state.email}>
-              Register
-          </button>
-        </form>
+        <div className='login-form'>
+          <form onSubmit = {this.handleSubmit}>
+            <label htmlFor = 'email'> {this.props.label} </label>
+            <input
+              placeholder = 'Enter email'
+              type = 'email'
+              value = {this.state.email}
+              onChange = {this.handleChange}
+              ></input>
+            <input
+              placeholder = 'Enter password'
+              type = 'password'
+              value = {this.state.password}
+              onChange = {this.handleChange}
+              ></input>
+            <button
+              type = 'submit'
+              disabled = {!this.state.email}>
+                Submit
+            </button>
+          </form>
+        </div>
+        <div>
+          <Link className="links" to="/organizations/registration>Donor">Register today</Link>
+        </div>
       </div>
       )
   }
