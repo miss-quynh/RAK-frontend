@@ -11,8 +11,9 @@ class DonorRegistration extends React.Component {
       zip_code:  '',
       email: '',
       password: '',
-      registrationSuccessful: false
+      auth_token: window.localStorage.getItem('auth_token')
     };
+
     this.handleFirstNameChange = this.handleFirstNameChange.bind(this)
     this.handleLastNameChange = this.handleLastNameChange.bind(this)
     this.handleZipcodeChange = this.handleZipcodeChange.bind(this)
@@ -47,61 +48,82 @@ class DonorRegistration extends React.Component {
   }
 
   handleSubmit(event) {
+      var currentContext = this;
       event.preventDefault()
       axios.post('http://localhost:8181/donors', {donor: this.state})
       .then(({data}) => {
         console.log(data)
-        this.setState({donor: data, registrationSuccessful: true})
+        if(Number.isInteger(data.id)){
+          // this.setState({donor: data, auth_token: true})
+          this.setState({donor: data})
+
+          var postData = JSON.stringify({
+            auth: {
+              email: this.state.email, password: this.state.password
+            }
+          });
+          // the first req registers the user
+          // the second req acutally logs them in and returns the JWT
+          this.serverRequest = axios.post("http://localhost:8181/donor_token", postData, {
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            }
+          })
+          .then(response => {
+            window.localStorage.setItem('auth_token', response.data.jwt)
+            // console.log(response.data.jwt)
+            currentContext.setState({auth_token: response.data.jwt})
+          })
+          .catch(error => console.log("Donor Login Error: ", error.response))
+        }
       })
     }
 
   render() {
-    if (this.state.registrationSuccessful) {
-      return <Redirect to="/donors"/>
-    } else {
-      return (
-        <div>
-          <h2>Donor Registration</h2>
-          <form onSubmit= { this.handleSubmit}>
-            <input
-              placeholder= {'Enter first name'}
-              type="text"
-              value={this.state.first_name}
-              onChange={this.handleFirstNameChange} >
-            </input>
-            <input
-              placeholder='Enter last name'
-              type="text"
-              value={this.state.last_name}
-              onChange={this.handleLastNameChange} >
-            </input>
-            <input
-              placeholder='Enter your zipcode'
-              type="integer"
-              value={this.state.zipcode}
-              onChange={this.handleZipcodeChange} >
-            </input>
-            <input
-              placeholder='Enter email'
-              type="email"
-              value={this.state.email}
-              onChange={this.handleEmailChange} >
-            </input>
-            <input
-              placeholder ='Enter password'
-              type="password"
-              value={this.state.password}
-              onChange={this.handlePasswordChange} >
-            </input>
-            <button
-              type='submit'
-              disabled={!this.state.email}>
-              <a href={ '/donors'}>Submit</a>
-            </button>
-          </form>
-        </div>
-      )
-    }
+    if (this.state.auth_token !== null) { return <Redirect to="/donors"/> } 
+    return (
+      <div>
+        <h2>Donor Registration</h2>
+        <form onSubmit= {this.handleSubmit}>
+          <input
+            placeholder= {'Enter first name'}
+            type="text"
+            value={this.state.first_name}
+            onChange={this.handleFirstNameChange} >
+          </input>
+          <input
+            placeholder='Enter last name'
+            type="text"
+            value={this.state.last_name}
+            onChange={this.handleLastNameChange} >
+          </input>
+          <input
+            placeholder='Enter your zipcode'
+            type="integer"
+            value={this.state.zipcode}
+            onChange={this.handleZipcodeChange} >
+          </input>
+          <input
+            placeholder='Enter email'
+            type="email"
+            value={this.state.email}
+            onChange={this.handleEmailChange} >
+          </input>
+          <input
+            placeholder ='Enter password'
+            type="password"
+            value={this.state.password}
+            onChange={this.handlePasswordChange} >
+          </input>
+          <button
+            type='submit'
+            disabled={!this.state.email}>
+            <a href={ '/donors'}>Submit</a>
+          </button>
+        </form>
+      </div>
+    )
   }
 }
 
