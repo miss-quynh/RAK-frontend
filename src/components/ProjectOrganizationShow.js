@@ -1,8 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import Item from './Item';
-import Organization from './Organization';
-import NewProjectForm from './NewProjectForm';
 
 class ProjectOrganizationShow extends React.Component {
 
@@ -19,36 +17,85 @@ class ProjectOrganizationShow extends React.Component {
         description: ''
       },
       items: [],
+      itemsOptions: [],
+      newDonation: {
+        quantity_requested: '',
+        quantity_received: '',
+        project_id: this.props.match.params.project_id
+      },
+      typeName: ''
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.projectsCall = this.projectsCall.bind(this)
+    this.organizationsCall = this.organizationsCall.bind(this)
+    this.donationTypesCall = this.donationTypesCall.bind(this)
+    this.updateQuantityRequested = this.updateQuantityRequested.bind(this)
+    this.updateQuantityReceived = this.updateQuantityReceived.bind(this)
+    this.updateTypeName = this.updateTypeName.bind(this)
   }
 
-  componentDidMount() {
+  projectsCall() {
     axios.get(`http://localhost:8181/projects/${this.props.match.params.project_id}`)
     .then((response) => {
       const newProjectInfo = response.data.project
       const items = response.data.donations
       this.setState({newProjectInfo, items})
     })
-    .catch((error) => {console.log('Error in retrieving project.', error)})
+    .catch((error) => {console.log('Error in retrieving projects.', error)})
+  }
 
+  organizationsCall() {
     axios.get(`http://localhost:8181/organizations/${this.props.match.params.organization_id}`)
     .then((response) => {
       const organizationInfo = response.data.organization
       this.setState({organizationInfo})
     })
-    .catch((error) => {console.log('Error in retrieving organization.', error)})
+    .catch((error) => {console.log('Error in retrieving organizations.', error)})
+  }
+
+  donationTypesCall() {
+    axios.get('http://localhost:8181/filters')
+    .then((response) => {
+      const itemsOptions = response.data.donation_type
+      this.setState({itemsOptions})
+    })
+    .catch((error) => {console.log('Error in retrieving donation types.', error)})
+  }
+
+  componentDidMount() {
+    this.projectsCall();
+    this.organizationsCall();
+    this.donationTypesCall();
+  }
+
+  updateQuantityRequested(event) {
+    this.setState({
+      newDonation: Object.assign({}, this.state.newDonation, {quantity_requested: event.target.value})
+    })
+  }
+
+  updateQuantityReceived(event) {
+    this.setState({
+      newDonation: Object.assign({}, this.state.newDonation, {quantity_received: event.target.value})
+    })
+  }
+
+  updateTypeName(event) {
+    this.setState({
+      typeName: event.target.value
+    })
   }
 
   handleSubmit(event) {
     event.preventDefault()
-    axios.post('http://localhost:8181/donations', {items: this.state.items, project_id: this.props.match.params.project_id})
+    axios.post('http://localhost:8181/donations', {donation: this.state.newDonation, type_name: this.state.typeName})
     .then(({data}) => {
-      console.log(data.data)
-      const thing = 'stuff'
-      this.setState({items: data})
+      let items = this.state.items
+      items.push({item: data.donation_type.type_name, quantity_received: data.donation.quantity_received, quantity_requested: data.donation.quantity_requested})
+      this.setState({items})
     })
+    .catch((error) => {console.log('Error in creating a new item.', error)})
   }
 
   render() {
@@ -74,26 +121,17 @@ class ProjectOrganizationShow extends React.Component {
                 Add
               </button>
 
-              <select>
-                <option value="food">Food</option>
-                <option value="food">Water</option>
-                <option value="food">Medicine</option>
-                <option value="food">Volunteer service</option>
-                <option value="food">Money</option>
-                <option value="food">Housewares</option>
-                <option value="food">Kitchenware</option>
-                <option value="food">Small appliances</option>
-                <option value="food">Clothing of all types</option>
-                <option value="food">Baby items</option>
-                <option value="food">Books</option>
-                <option value="food">Toys</option>
-                <option value="food">Books</option>
-                <option value="food">Vehicle</option>
-                <option value="food">Electronics</option>
+              <select onChange={this.updateTypeName}>
+                <option value="">Select Donation Type</option>
+                {this.state.itemsOptions.map((option) => {
+                  return (
+                    <option value={option}>{option}</option>
+                  )
+                })}
               </select>
 
-              <input type="number" placeholder="Quantity needed" value={this.state.newProjectInfo.quantity_requested} />
-              <input type="number" placeholder="Quantity received" value={this.state.newProjectInfo.quantity_received} />
+              <input onChange={this.updateQuantityRequested} type="number" placeholder="Quantity needed" value={this.state.newProjectInfo.quantity_requested} />
+              <input onChange={this.updateQuantityReceived}type="number" placeholder="Quantity received" value={this.state.newProjectInfo.quantity_received} />
 
               {this.state.items.map((item) => {
                 return (

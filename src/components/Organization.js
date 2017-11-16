@@ -56,11 +56,6 @@ class Organization extends React.Component {
           {this.state.projects.map( project => <li><Link to={`/projects/${project.id}`}>{project.project_name}</Link></li>)
           }
         </ul>
-
-        <ProjectOrganizationShow
-          toggleProjectFormState={this.toggleProjectFormState}
-          displayNewProjectForm={this.state.displayNewProjectForm}
-        />
       </div>
     );
   }

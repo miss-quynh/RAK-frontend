@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 
 import './App.css';
-// import './Home.css';
+import './Home.css';
 import Home from './components/Home';
 import Donor from './components/Donor';
 import Organization from './components/Organization';
@@ -20,8 +20,8 @@ class App extends React.Component {
     return(
       <Router>
         <div>
-          <header>
-            <Link to="/"><h1>RaK</h1></Link>
+          <header className="navigation-bar">
+            <Link className="navigation-text" to="/"><h1>RÄK</h1></Link>
           </header>
 
           <Switch>
