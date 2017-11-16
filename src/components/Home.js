@@ -5,15 +5,11 @@ class Home extends React.Component {
   render() {
     return (
       <div className="options-container">
-        <ul>
-          <li><Link className="options-routes" to="/donors/login">Donor</Link></li>
-          <li><Link className="options-routes" to="/organizations/login">Organization</Link></li>
-        </ul>
         <div className="donor-routes">
-          <Link className="donor-text" to="/donors">Donor</Link>
+          <Link className="donor-text" to="/donors/login">Donor</Link>
         </div>
         <div className="organization-routes">
-          <Link className="organization-text" to="/organizations">Organization</Link>
+          <Link className="organization-text" to="/organizations/login">Organization</Link>
         </div>
       </div>
     );

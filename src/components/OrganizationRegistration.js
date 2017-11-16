@@ -6,100 +6,112 @@ class OrganizationRegistration extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      tax_code:  '',
-      email: '',
-      category: '',
-      password: '',
-      registrationSuccessful: false
+      orgData: {
+        tax_code: '',
+        email: '',
+        category: '',
+        password: ''
+      },
+      categories: [],
+      registrationSuccessful: false,
+      ValidEIN: false
+
     };
-    this.handleTaxCodeChange = this.handleTaxCodeChange.bind(this)
-    this.handleZipcodeChange = this.handleZipcodeChange.bind(this)
-    this.handleEmailChange = this.handleEmailChange.bind(this)
-    this.handleCategoryChange = this.handleCategoryChange.bind(this)
-    this.handlePasswordChange = this.handlePasswordChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+
+    this.categoriesCall = this.categoriesCall.bind(this)
+    this.handleEINChange = this.handleEINChange.bind(this)
+    this.handleEINSubmit = this.handleEINSubmit.bind(this)
   }
 
-    handleTaxCodeChange(event) {
-    this.setState({
-      tax_code: event.target.value})
+  categoriesCall(){
+    const that = this
+    axios.get('http://localhost:8181/filters').then( function(response) {
+      let categories = response.data['categories']
+      that.setState({categories})
+    })
   }
 
-    handleZipcodeChange(event) {
-    this.setState({
-      zip_code: event.target.value})
+  componentDidMount() {
+    this.categoriesCall()
   }
 
-    handleEmailChange(event) {
-    this.setState({
-      email: event.target.value})
-  }
-
-    handleCategoryChange(event) {
-    this.setState({
-      category: event.target.value})
-  }
-
-    handlePasswordChange(event) {
-    this.setState({
-      password: event.target.value})
-  }
-
-  handleSubmit(event) {
-      event.preventDefault()
-      axios.post('http://localhost:8181/organizations', {donor: this.state})
-      .then(({data}) => {
+  handleEINSubmit(event) {
+    event.preventDefault()
+    console.log(this.state)
+    axios.post('http://localhost:8181/organizations/ein', {ein: this.state.orgData.tax_code})
+        .then(({data}) => {
         console.log(data)
-        this.setState({organizaiton: data, registrationSuccessful: true})
-      })
+        })
+  }
+
+
+  handleEINCall(){
+    const that = this
+    axios.get('http://localhost:8181/organizations').then( function(response) {
+      const organizations = []
+      response.data.map( organization => organizations.push(organization) )
+      that.setState({organizations})
+    })
+  }
+
+  handleEINChange(event){
+    let orgData = this.state.orgData
+    orgData.tax_code = (event.target.value)
+    this.setState({orgData})
+  }
+
+  EINForm() {
+    return(
+      <form onSubmit={this.handleEINSubmit}>
+            <label>Employer Identification Number: </label>
+            <input
+              placeholder='XX-XXXXXX'
+              type="text"
+              value={this.state.EIN}
+              onChange={this.handleEINChange} />
+            <input type="submit" />
+          </form>
+    )
+  }
+
+
+  registrationData(){
+    if (this.state.validEIN) {
+      return(
+        <div>
+          <form>
+            <h5>IEN: {this.state.tax_code}</h5>
+            <label>Name</label>
+            <input type="integer" placeholder='Zipcode' value={this.state.zipcode}/>
+            <label>Email</label>
+            <input placeholder='Email' type="email" value={this.state.email}/>
+            <label>Category</label>
+            <select>
+              {this.state.categories.map( function (category) {
+                return <option value={category}>{category}</option>
+              } )
+              }
+            </select>
+            <label>Password</label>
+            <input placeholder ='Password' type="password" value={this.state.password}/>
+            <input type='submit'/>
+          </form>
+        </div>
+      )
     }
+  }
 
   render() {
     if (this.state.registrationSuccessful) {
       return <Redirect to="/organizations/:id"/>
     } else {
-      return (
-        <div>
-          <h2>Organization Registration</h2>
-          <form onSubmit= { this.handleSubmit}>
-            <input
-              placeholder='Enter tax code'
-              type="text"
-              value={this.state.tax_code}
-              onChange={this.handleTaxCodeChange} >
-            </input>
-            <input
-              placeholder='Enter your zipcode'
-              type="integer"
-              value={this.state.zipcode}
-              onChange={this.handleZipcodeChange} >
-            </input>
-            <input
-              placeholder='Enter email'
-              type="email"
-              value={this.state.email}
-              onChange={this.handleEmailChange} >
-            </input>
-            <input
-              placeholder='Enter Category'
-              type="Category"
-              value={this.state.category}
-              onChange={this.handleCategoryChange} >
-            </input>
-            <input
-              placeholder ='Enter password'
-              type="password"
-              value={this.state.password}
-              onChange={this.handlePasswordChange} >
-            </input>
-            <button
-              type='submit'
-              disabled={!this.state.email}>
-                Submit
-            </button>
-          </form>
-        </div>
-      )
+        return (
+          <div>
+            <h2>Organization Registration</h2>
+            {this.EINForm()}
+            {this.registrationData()}
+          </div>
+        )
     }
   }
 }
