@@ -203,7 +203,7 @@ class Donor extends React.Component {
   }
 
   render() {
-    if(window.localStorage.getItem('auth_token') === null) { return <Redirect to="/donors/login"/> }
+    if(this.props.auth_token === null) { return <Redirect to="/donors/login"/> }
     return (
       <div>
         <div className="proj-org-btn-container">

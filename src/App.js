@@ -23,16 +23,12 @@ class App extends React.Component {
     super()
 
     this.state = {
-      auth_token: null
+      auth_token: window.localStorage.getItem('auth_token')
     }
 
     this.updateAuthToken = this.updateAuthToken.bind(this)
     this.checkAuthStatus = this.checkAuthStatus.bind(this)
 
-  }
-
-  componentWillMount () {
-    this.setState({auth_token: window.localStorage.getItem('auth_token')})
   }
 
   updateAuthToken (current_auth) {
@@ -42,35 +38,51 @@ class App extends React.Component {
   checkAuthStatus () {
     console.log('in authSta')
     if(this.state.auth_token !== null){
-      console.log('in check conditional')
-      return <Logout updateAuthToken={this.updateAuthToken} />
-    }else if(window.localStorage.getItem('auth_token') !== null){
-      this.setState({auth_token: window.localStorage.getItem('auth_token')})
     }
+    return null
   }
 
   render() {
     return(
       <Router>
         <div>
+
           <header className="navigation-bar">
             <Link className="navigation-text" to="/"><h1>RÄK</h1></Link>
-            {this.checkAuthStatus()}
+            <Logout updateAuthToken={this.updateAuthToken} auth_token={this.state.auth_token} />
           </header>
 
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/donors" component={Donor} />
             <Route exact path="/organizations/login" component={OrganizationLogin}/>
             <Route exact path="/organizations/:organization_id/projects/:project_id" component={ProjectOrganizationShow} />
             <Route path="/organizations/registration" component={OrganizationRegistration} />
             <Route path="/organizations/:id" component={Organization} />
             <Route path="/projects/:id" component={ProjectDisp} />
             <Route exact path="/image_upload" component={ImageUpload} />
-            <Route exact path="/donors/login" component={DonorLogin} />
-            <Route exact path="/donors/registration" component={DonorRegistration} />
+            <Route exact path="/donors" render={(props) => (
+              <Donor
+                {...props}
+                auth_token={this.state.auth_token}
+              />
+            )} />
+            <Route exact path="/donors/login" render={(props) => (
+              <DonorLogin
+                {...props}
+                auth_token={this.state.auth_token}
+                updateAuthToken={this.updateAuthToken}
+              />
+            )} />
+            <Route exact path="/donors/registration" render={(props) => (
+              <DonorRegistration
+                {...props}
+                auth_token={this.state.auth_token}
+                updateAuthToken={this.updateAuthToken}
+              />
+            )} />
             <Route render={() => <h1>Page not found</h1>} />
           </Switch>
+
         </div>
       </Router>
     )
