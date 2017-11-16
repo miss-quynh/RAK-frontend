@@ -27,7 +27,6 @@ class OrganizationLogin extends React.Component {
     event.preventDefault();
     var currentContext = this;
     var authDetails = {
-
         auth: {
           email: this.state.email,
           password: this.state.password
