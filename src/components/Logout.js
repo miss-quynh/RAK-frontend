@@ -12,10 +12,14 @@ class Logout extends React.Component {
 
   handleLogout () {
     console.log('in handleLogout')
-    this.props.updateAuthToken(window.localStorage.removeItem('auth_token'))
+    window.localStorage.removeItem('auth_token')
+    this.props.updateAuthToken(null)
   }
 
   render() {
+    if(this.props.auth_token === null) {
+      return null
+    }
     return (
       <div>
         <button onClick={this.handleLogout} >Logout</button>

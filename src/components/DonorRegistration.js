@@ -5,13 +5,13 @@ import axios from 'axios';
 class DonorRegistration extends React.Component {
   constructor(props){
     super(props);
+
     this.state = {
       first_name: '',
       last_name:  '',
       zip_code:  '',
       email: '',
-      password: '',
-      auth_token: window.localStorage.getItem('auth_token')
+      password: ''
     };
 
     this.handleFirstNameChange = this.handleFirstNameChange.bind(this)
@@ -20,6 +20,7 @@ class DonorRegistration extends React.Component {
     this.handleEmailChange = this.handleEmailChange.bind(this)
     this.handlePasswordChange = this.handlePasswordChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+
   }
 
     handleFirstNameChange(event) {
@@ -52,7 +53,7 @@ class DonorRegistration extends React.Component {
       event.preventDefault()
       axios.post('http://localhost:8181/donors', {donor: this.state})
       .then(({data}) => {
-        console.log(data)
+        // console.log(data)
         if(Number.isInteger(data.id)){
           // this.setState({donor: data, auth_token: true})
           this.setState({donor: data})
@@ -72,8 +73,7 @@ class DonorRegistration extends React.Component {
           })
           .then(response => {
             window.localStorage.setItem('auth_token', response.data.jwt)
-            // console.log(response.data.jwt)
-            currentContext.setState({auth_token: response.data.jwt})
+            currentContext.props.updateAuthToken(response.data.jwt)
           })
           .catch(error => console.log("Donor Login Error: ", error.response))
         }
@@ -81,7 +81,7 @@ class DonorRegistration extends React.Component {
     }
 
   render() {
-    if (this.state.auth_token !== null) { return <Redirect to="/donors"/> } 
+    if (this.props.auth_token !== null) { return <Redirect to="/donors"/> }
     return (
       <div>
         <h2>Donor Registration</h2>

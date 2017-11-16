@@ -8,8 +8,7 @@ class DonorLogin extends React.Component {
     super(props);
     this.state = {
       email: '',
-      password: '',
-      auth_token: window.localStorage.getItem('auth_token')
+      password: ''
     };
 
     this.handleEmailChange = this.handleEmailChange.bind(this)
@@ -46,14 +45,13 @@ class DonorLogin extends React.Component {
     })
     .then(response => {
       window.localStorage.setItem('auth_token', response.data.jwt)
-      currentContext.setState({auth_token: response.data.jwt})
-      // console.log(response.data.jwt)
+      currentContext.props.updateAuthToken(response.data.jwt)
     })
     .catch(error => console.log("Donor Login Error: ", error.response))
   }
 
   render() {
-    if(this.state.auth_token !== null) { return <Redirect to="/donors"/> }
+    if(this.props.auth_token !== null) { return <Redirect to="/donors"/> }
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
