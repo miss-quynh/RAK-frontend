@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 
 class OrganizationLogin extends React.Component {
   constructor(props){
@@ -26,9 +25,8 @@ class OrganizationLogin extends React.Component {
 
     handleSubmit(event) {
     event.preventDefault();
-
     var currentContext = this;
-        var authDetails = {
+    var authDetails = {
 
         auth: {
           email: this.state.email,
@@ -41,7 +39,7 @@ class OrganizationLogin extends React.Component {
         }
       });
 
-    this.serverRequest = axios.post("http://localhost:3000/donor_token", postData, {
+    this.serverRequest = axios.post("http://localhost:3000/organization_token", postData, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -49,36 +47,37 @@ class OrganizationLogin extends React.Component {
     }
     )
       .then(response => console.log(response.data))
-      .catch(error => console.log("Donor Login Error: ", error.response))
+      .catch(error => console.log("Organization Login Error: ", error.response))
   }
+
   render() {
     return (
       <div>
-        <div className='login-form'>
-          <form onSubmit = {this.handleSubmit}>
-            <label htmlFor = 'email'> {this.props.label} </label>
-            <input
-              placeholder = 'Enter email'
-              type = 'email'
-              value = {this.state.email}
-              onChange = {this.handleChange}
-              ></input>
-            <input
-              placeholder = 'Enter password'
-              type = 'password'
-              value = {this.state.password}
-              onChange = {this.handleChange}
-              ></input>
-            <button
-              type = 'submit'
-              disabled = {!this.state.email}>
-                Submit
-            </button>
-          </form>
-        </div>
-        <div>
-          <Link className="links" to="/organizations/registration>Donor">Register today</Link>
-        </div>
+        <form onSubmit = {this.handleSubmit}>
+          <label htmlFor = 'email'> {this.props.label} </label>
+          <input
+            placeholder = 'Enter email'
+            type = "email"
+            value = {this.state.email}
+            onChange = {this.handleEmailChange}>
+            </input>
+          <input
+            placeholder = 'Enter password'
+            type = "password"
+            value = {this.state.password}
+            onChange = {this.handlePasswordChange}>
+            </input>
+          <button
+            type = 'submit'
+            disabled = {!this.state.email}>
+            <a href={ '/organizations/:id'}>Submit</a>
+          </button>
+          <button
+            type = 'Register'
+            disabled = {!this.state.email}>
+            <a href={ '/organizations/registration'}>Register</a>
+          </button>
+        </form>
       </div>
       )
   }
