@@ -77,15 +77,13 @@ class ProjectOrganizationShow extends React.Component {
   }
 
   updateQuantityRequested(event) {
-    this.setState({
-      newDonation: Object.assign({}, this.state.newDonation, {quantity_requested: event.target.value})
-    })
+    const newDonation = Object.assign({}, this.state.newDonation, {quantity_requested: event.target.value})
+    this.setState({newDonation})
   }
 
   updateQuantityReceived(event) {
-    this.setState({
-      newDonation: Object.assign({}, this.state.newDonation, {quantity_received: event.target.value})
-    })
+    const newDonation = Object.assign({}, this.state.newDonation, {quantity_received: event.target.value})
+    this.setState({newDonation})
   }
 
   updateItemNameInput(event) {
@@ -106,17 +104,15 @@ class ProjectOrganizationShow extends React.Component {
     .then(({data}) => {
       let donations = this.state.donations
       donations.push({item: data.item.item_name, quantity_received: data.donation.quantity_received, quantity_requested: data.donation.quantity_requested})
-      this.setState({donations, itemNameInput: '', newProjectInfo: {quantity_requested: '', quantity_received: ''}})
+      this.setState({donations, itemNameInput: '', newDonation: Object.assign({}, this.state.newDonation, {quantity_requested: '', quantity_received: ''}) })
     })
     .catch((error) => {console.log('Error in creating a new item.', error)})
   }
 
   removeItemButton(event) {
     event.preventDefault()
-    console.log(event.target.id)
     axios.delete(`http://localhost:8181/donations/${event.target.id}`)
     .then((response) => {
-      console.log(response)
       const donations = response.data
       this.setState({donations})
     })
@@ -128,12 +124,9 @@ class ProjectOrganizationShow extends React.Component {
   }
 
   submitEdits(editedProjectData) {
-    // A bunch of other AJAX, etc, code
     this.setState({currentlyEditing: false})
     axios.put(`http://localhost:8181/projects/${this.props.match.params.project_id}`, { project: editedProjectData })
     .then((response) => {
-      console.log("*******************")
-      console.log(response)
       const newProjectInfo = response.data.project
       this.setState({newProjectInfo})
     })
@@ -142,13 +135,12 @@ class ProjectOrganizationShow extends React.Component {
 
   render() {
     return (
-      <div className="project-organization-container">
+      <div className="project-organization-display-container">
         <div className="organization-info">
           <p>{this.state.organizationInfo.organization_logo}</p>
         </div>
 
         <div className="project-info">
-
           {this.state.currentlyEditing ?
             <ProjectEdit
               newProjectInfo={this.state.newProjectInfo}
@@ -172,39 +164,43 @@ class ProjectOrganizationShow extends React.Component {
           }
         </div>
 
-          <div className="donations-list">
-            <form>
-              <button className="add-item-button" onClick={this.handleSubmit}>
-                Add
+        <div className="add-donation-container">
+          <form className="add-donation-form">
+            <button className="add-item-button" onClick={this.handleSubmit}>
+              Add
+            </button>
+
+            <select className="donation-type-drop-down" onChange={this.updateDonationTypeInput}>
+              <option value="">Select Donation Type</option>
+              {this.state.donationTypes.map((option) => {
+                return (
+                  <option value={option}>{option}</option>
+                )
+              })}
+            </select>
+
+            <input onChange={this.updateItemNameInput} type="text" placeholder="Item needed" value={this.state.itemNameInput} />
+            <input onChange={this.updateQuantityRequested} type="number" placeholder="Quantity needed" value={this.state.newDonation.quantity_requested} />
+            <input onChange={this.updateQuantityReceived}type="number" placeholder="Quantity received" value={this.state.newDonation.quantity_received} />
+          </form>
+        </div>
+
+        <div className="donations-list-container">
+          {this.state.donations.map((item) =>
+            <div className="item-row">
+              <button className="remove-item-button" id={item.id} onClick={this.removeItemButton} >
+                Remove
               </button>
 
-              <select onChange={this.updateDonationTypeInput}>
-                <option value="">Select Donation Type</option>
-                {this.state.donationTypes.map((option) => {
-                  return (
-                    <option value={option}>{option}</option>
-                  )
-                })}
-              </select>
-
-              <input onChange={this.updateItemNameInput} type="text" placeholder="Item needed" value={this.state.itemNameInput} />
-              <input onChange={this.updateQuantityRequested} type="number" placeholder="Quantity needed" value={this.state.newProjectInfo.quantity_requested} />
-              <input onChange={this.updateQuantityReceived}type="number" placeholder="Quantity received" value={this.state.newProjectInfo.quantity_received} />
-
-              {this.state.donations.map((item) =>
-                  <div className="item-display">
-                    <button className="remove-item-button" id={item.id} onClick={this.removeItemButton} >
-                      Remove
-                    </button>
-
-                    <input type="text" value={item.item} />
-                    <input type="number" value={item.quantity_requested} />
-                    <input type="number" value={item.quantity_received} />
-                  </div>
-              )}
-            </form>
-          </div>
+              <span>
+                Item: {item.item} |
+                Quantity Requested: {item.quantity_requested} |
+                Quantity Received: {item.quantity_received}
+              </span>
+            </div>
+          )}
         </div>
+      </div>
     );
   }
 }
