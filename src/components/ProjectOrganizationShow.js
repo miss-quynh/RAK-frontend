@@ -35,6 +35,7 @@ class ProjectOrganizationShow extends React.Component {
     this.updateQuantityReceived = this.updateQuantityReceived.bind(this)
     this.updateItemNameInput = this.updateItemNameInput.bind(this)
     this.updateDonationTypeInput = this.updateDonationTypeInput.bind(this)
+    this.removeItemButton = this.removeItemButton.bind(this)
   }
 
   projectsCall() {
@@ -106,6 +107,17 @@ class ProjectOrganizationShow extends React.Component {
     .catch((error) => {console.log('Error in creating a new item.', error)})
   }
 
+  removeItemButton(event) {
+    event.preventDefault()
+    console.log(event.target.id)
+    axios.delete(`http://localhost:8181/donations/${event.target.id}`)
+    .then((response) => {
+      console.log(response)
+      const donations = response.data
+      this.setState({donations})
+    })
+  }
+
   render() {
     return (
       <div className="project-organization-container">
@@ -125,7 +137,7 @@ class ProjectOrganizationShow extends React.Component {
 
           <div className="donations-list">
             <form>
-              <button onClick={this.handleSubmit}>
+              <button className="add-item-button" onClick={this.handleSubmit}>
                 Add
               </button>
 
@@ -142,15 +154,16 @@ class ProjectOrganizationShow extends React.Component {
               <input onChange={this.updateQuantityRequested} type="number" placeholder="Quantity needed" value={this.state.newProjectInfo.quantity_requested} />
               <input onChange={this.updateQuantityReceived}type="number" placeholder="Quantity received" value={this.state.newProjectInfo.quantity_received} />
 
-              {this.state.donations.map((item) => {
-                return (
-                  <div>
+              {this.state.donations.map((item) =>
+                  <div className="item-display">
+                    <button className="remove-item-button" id={item.id} onClick={this.removeItemButton} >
+                      Remove
+                    </button>
+
                     <input type="text" value={item.item} />
                     <input type="number" value={item.quantity_requested} />
                     <input type="number" value={item.quantity_received} />
                   </div>
-                )
-              }
               )}
             </form>
           </div>
