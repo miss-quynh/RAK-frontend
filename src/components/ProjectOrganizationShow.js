@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Item from './Item';
+import ProjectEdit from './ProjectEdit';
 
 class ProjectOrganizationShow extends React.Component {
 
@@ -24,7 +25,8 @@ class ProjectOrganizationShow extends React.Component {
         project_id: this.props.match.params.project_id
       },
       itemNameInput: '',
-      donationTypeInput: ''
+      donationTypeInput: '',
+      currentlyEditing: false
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -36,6 +38,8 @@ class ProjectOrganizationShow extends React.Component {
     this.updateItemNameInput = this.updateItemNameInput.bind(this)
     this.updateDonationTypeInput = this.updateDonationTypeInput.bind(this)
     this.removeItemButton = this.removeItemButton.bind(this)
+    this.startEditing = this.startEditing.bind(this)
+    this.submitEdits = this.submitEdits.bind(this)
   }
 
   projectsCall() {
@@ -116,6 +120,24 @@ class ProjectOrganizationShow extends React.Component {
       const donations = response.data
       this.setState({donations})
     })
+    .catch((error) => {console.log('Error in removing an item.', error)})
+  }
+
+  startEditing() {
+    this.setState({currentlyEditing: true})
+  }
+
+  submitEdits(editedProjectData) {
+    // A bunch of other AJAX, etc, code
+    this.setState({currentlyEditing: false})
+    axios.put(`http://localhost:8181/projects/${this.props.match.params.project_id}`, { project: editedProjectData })
+    .then((response) => {
+      console.log("*******************")
+      console.log(response)
+      const newProjectInfo = response.data.project
+      this.setState({newProjectInfo})
+    })
+    .catch((error) => {console.log('Error in updating the project.', error)})
   }
 
   render() {
@@ -126,14 +148,29 @@ class ProjectOrganizationShow extends React.Component {
         </div>
 
         <div className="project-info">
-          <form>
-            <textarea type="text" value={this.state.newProjectInfo.project_name} />
-            <textarea type="text" value={this.state.newProjectInfo.street_address} />
-            <textarea type="text" value={this.state.newProjectInfo.city} />
-            <textarea type="text" value={this.state.newProjectInfo.state} />
-            <textarea type="text" value={this.state.newProjectInfo.zip_code} />
-            <textarea type="text" value={this.state.newProjectInfo.description} />
-          </form>
+
+          {this.state.currentlyEditing ?
+            <ProjectEdit
+              newProjectInfo={this.state.newProjectInfo}
+              project_id={this.props.match.params.project_id}
+              submitEdits={this.submitEdits}
+            />
+          :
+            <div>
+              <button className="edit-button" onClick={this.startEditing}>
+                Edit
+              </button>
+              <span>
+                <p>{this.state.newProjectInfo.project_name}</p>
+                <p>{this.state.newProjectInfo.street_address}</p>
+                <p>{this.state.newProjectInfo.city}</p>
+                <p>{this.state.newProjectInfo.state}</p>
+                <p>{this.state.newProjectInfo.zip_code}</p>
+                <p>{this.state.newProjectInfo.description}</p>
+              </span>
+            </div>
+          }
+        </div>
 
           <div className="donations-list">
             <form>
@@ -168,7 +205,6 @@ class ProjectOrganizationShow extends React.Component {
             </form>
           </div>
         </div>
-      </div>
     );
   }
 }
