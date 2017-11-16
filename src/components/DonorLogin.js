@@ -8,7 +8,6 @@ class DonorLogin extends React.Component {
       email: '',
       password: ''
     };
-
     this.handleEmailChange = this.handleEmailChange.bind(this)
     this.handlePasswordChange = this.handlePasswordChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -71,17 +70,17 @@ class DonorLogin extends React.Component {
           <button
             type = 'Guest'
             disabled = {!this.state.email}>
-              Continue as Guest
+            <a href={ '/donors'}>Continue as guest</a>
           </button>
           <button
             type = 'Register'
             disabled = {!this.state.email}>
-              Register
+            <a href={ '/donors/registration'}>Register</a>
           </button>
           <button
             type='submit'
             disabled={!this.state.email}>
-              Submit
+            <a href={ '/donors'}>Submit</a>
           </button>
         </form>
       </div>

@@ -96,7 +96,7 @@ class DonorRegistration extends React.Component {
             <button
               type='submit'
               disabled={!this.state.email}>
-                Submit
+              <a href={ '/donors'}>Submit</a>
             </button>
           </form>
         </div>
