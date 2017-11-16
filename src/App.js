@@ -13,8 +13,39 @@ import ImageUpload from './components/ImageUpload'
 import DonorLogin from './components/DonorLogin'
 import DonorRegistration from './components/DonorRegistration'
 import OrganizationRegistration from './components/OrganizationRegistration'
+import Logout from './components/Logout'
 
 class App extends React.Component {
+
+  constructor () {
+    super()
+
+    this.state = {
+      auth_token: null
+    }
+
+    this.updateAuthToken = this.updateAuthToken.bind(this)
+    this.checkAuthStatus = this.checkAuthStatus.bind(this)
+
+  }
+
+  componentWillMount () {
+    this.setState({auth_token: window.localStorage.getItem('auth_token')})
+  }
+
+  updateAuthToken (current_auth) {
+    this.setState({auth_token: current_auth})
+  }
+
+  checkAuthStatus () {
+    console.log('in authSta')
+    if(this.state.auth_token !== null){
+      console.log('in check conditional')
+      return <Logout updateAuthToken={this.updateAuthToken} />
+    }else if(window.localStorage.getItem('auth_token') !== null){
+      this.setState({auth_token: window.localStorage.getItem('auth_token')})
+    }
+  }
 
   render() {
     return(
@@ -22,7 +53,7 @@ class App extends React.Component {
         <div>
           <header className="navigation-bar">
             <Link className="navigation-text" to="/"><h1>RÄK</h1></Link>
-            
+            {this.checkAuthStatus()}
           </header>
 
           <Switch>
