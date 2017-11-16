@@ -5,33 +5,50 @@ class OrganizationLogin extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      email: ''
+      email: '',
+      password: '',
     };
-
+    this.handleEmailChange = this.handleEmailChange.bind(this)
+    this.handlePasswordChange = this.handlePasswordChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-
-  handleSubmit(event) {
-    event.preventDefault();
-
-    var currentContext = this;
-    this.serverRequest = axios
-    .post("localhost:8181/organization_token", {
-      "auth": {
-        "email": this.state.email
-      }
-      // .then(function (response) {
-      //   console.log(response);
-      //   if (response.data.code == 201){
-      //     console.log("Success")
-      //   }
-      // })
     }
-    // this.props.onSubmit(
-    //   this.state.email
-    );
+
+    handleEmailChange(event) {
+    this.setState({
+      email: event.target.value})
+    }
+
+    handlePasswordChange(event) {
+    this.setState({
+      password: event.target.value})
+    }
+
+    handleSubmit(event) {
+    event.preventDefault();
+    var currentContext = this;
+    var authDetails = {
+        auth: {
+          email: this.state.email,
+          password: this.state.password
+        }
+    }
+     var postData = JSON.stringify({
+      auth: {
+        email: this.state.email, password: this.state.password
+        }
+      });
+
+    this.serverRequest = axios.post("http://localhost:3000/organization_token", postData, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    }
+    )
+      .then(response => console.log(response.data))
+      .catch(error => console.log("Organization Login Error: ", error.response))
   }
+
   render() {
     return (
       <div>
@@ -39,14 +56,25 @@ class OrganizationLogin extends React.Component {
           <label htmlFor = 'email'> {this.props.label} </label>
           <input
             placeholder = 'Enter email'
-            type = 'email'
+            type = "email"
             value = {this.state.email}
-            onChange = {this.handleChange}
-            ></input>
+            onChange = {this.handleEmailChange}>
+            </input>
+          <input
+            placeholder = 'Enter password'
+            type = "password"
+            value = {this.state.password}
+            onChange = {this.handlePasswordChange}>
+            </input>
           <button
             type = 'submit'
             disabled = {!this.state.email}>
-              Submit
+            <a href={ '/organizations/:id'}>Submit</a>
+          </button>
+          <button
+            type = 'Register'
+            disabled = {!this.state.email}>
+            <a href={ '/organizations/registration'}>Register</a>
           </button>
         </form>
       </div>

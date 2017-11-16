@@ -1,17 +1,21 @@
 import React from 'react';
 import axios from 'axios';
+import { Redirect } from 'react-router'
+
 
 class DonorLogin extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      auth_token: window.localStorage.getItem('auth_token')
     };
 
     this.handleEmailChange = this.handleEmailChange.bind(this)
     this.handlePasswordChange = this.handlePasswordChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+
   }
 
   handleEmailChange(event) {
@@ -27,60 +31,59 @@ class DonorLogin extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     var currentContext = this;
-    var authDetails = {
 
-        auth: {
-          email: this.state.email,
-          password: this.state.password
-        }
-    }
      var postData = JSON.stringify({
       auth: {
         email: this.state.email, password: this.state.password
         }
       });
-     // fetch("http://localhost:3000/donor_token", {
-     //  method: "post",
-     //  headers: {
-     //    'Content-Type': 'text/plain'
-     //  },
-     //  body: JSON.stringify(authDetails)
-     // })
 
-    // .catch(error => console.log("Donor Login Error: ", error))
-    // console.log(authDetails)
-    this.serverRequest = axios.post("http://localhost:3000/donor_token", postData, {
+    this.serverRequest = axios.post("http://localhost:8181/donor_token", postData, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       }
-    }
-    )
-      .then(response => console.log(response.data))
-      .catch(error => console.log("Donor Login Error: ", error.response))
+    })
+    .then(response => {
+      window.localStorage.setItem('auth_token', response.data.jwt)
+      currentContext.setState({auth_token: response.data.jwt})
+      // console.log(response.data.jwt)
+    })
+    .catch(error => console.log("Donor Login Error: ", error.response))
   }
 
   render() {
+    if(this.state.auth_token !== null) { return <Redirect to="/donors"/> }
     return (
       <div>
-        <form onSubmit = {this.handleSubmit}>
-          <label htmlFor = 'email'> {this.props.label} </label>
+        <form onSubmit={this.handleSubmit}>
+          <label htmlFor='email'> {this.props.label} </label>
           <input
-            placeholder = 'Enter email'
-            type = "email"
-            value = {this.state.email}
-            onChange = {this.handleEmailChange} >
+            placeholder='Enter email'
+            type="email"
+            value={this.state.email}
+            onChange={this.handleEmailChange} >
           </input>
           <input
-            placeholder = 'Enter password'
-            type = "password"
-            value = {this.state.password}
-            onChange = {this.handlePasswordChange} >
+            placeholder='Enter password'
+            type="password"
+            value={this.state.password}
+            onChange={this.handlePasswordChange} >
           </input>
           <button
-            type = 'submit'
+            type = 'Guest'
             disabled = {!this.state.email}>
-              Submit
+            <a href={ '/donors'}>Continue as guest</a>
+          </button>
+          <button
+            type = 'Register'
+            disabled = {!this.state.email}>
+            <a href={ '/donors/registration'}>Register</a>
+          </button>
+          <button
+            type='submit'
+            disabled={!this.state.email}>
+            <a href={ '/donors'}>Submit</a>
           </button>
         </form>
       </div>

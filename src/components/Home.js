@@ -5,15 +5,12 @@ class Home extends React.Component {
   render() {
     return (
       <div className="options-container">
-
         <div className="donor-routes">
-          <Link className="donor-text" to="/donors">Donor</Link>
+          <Link className="donor-text" to="/donors/login">Donor</Link>
         </div>
-
         <div className="organization-routes">
-          <Link className="organization-text" to="/organizations">Organization</Link>
+          <Link className="organization-text" to="/organizations/login">Organization</Link>
         </div>
-
       </div>
     );
   }

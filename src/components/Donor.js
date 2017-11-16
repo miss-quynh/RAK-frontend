@@ -1,6 +1,6 @@
 import React from 'react';
 import {Checkbox, CheckboxGroup} from 'react-checkbox-group';
-
+import { Redirect } from 'react-router'
 import Project from './Project';
 import OrganizationDonor from './OrganizationDonor';
 import axios from 'axios';
@@ -203,6 +203,7 @@ class Donor extends React.Component {
   }
 
   render() {
+    if(window.localStorage.getItem('auth_token') === null) { return <Redirect to="/donors/login"/> }
     return (
       <div>
         <div className="proj-org-btn-container">
@@ -228,5 +229,3 @@ class Donor extends React.Component {
 }
 
 export default Donor;
-
-
