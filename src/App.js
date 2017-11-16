@@ -9,11 +9,13 @@ import Organization from './components/Organization';
 import ProjectDisp from './components/ProjectDisp';
 import OrganizationLogin from './components/OrganizationLogin';
 import ProjectOrganizationShow from './components/ProjectOrganizationShow';
-import ImageUpload from './components/ImageUpload'
-import DonorLogin from './components/DonorLogin'
-import DonorRegistration from './components/DonorRegistration'
-import OrganizationRegistration from './components/OrganizationRegistration'
-import Logout from './components/Logout'
+import ImageUpload from './components/ImageUpload';
+import DonorLogin from './components/DonorLogin';
+import ProjectEdit from './components/ProjectEdit';
+import DonorRegistration from './components/DonorRegistration';
+import OrganizationRegistration from './components/OrganizationRegistration';
+import Logout from './components/Logout';
+
 
 class App extends React.Component {
 
