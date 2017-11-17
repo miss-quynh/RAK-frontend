@@ -16,7 +16,6 @@ class ProjectDisp extends React.Component {
   componentDidMount() {
     const that = this
     axios.get(`http://localhost:8181/projects/${that.props.match.params.id}`).then( function(response) {
-      console.log(response)
       const projectInfo = response.data["project"]
       const items = response.data["donations"]
 
@@ -35,6 +34,7 @@ class ProjectDisp extends React.Component {
           )}
         </div>
       </div>
+
     );
   }
 }
