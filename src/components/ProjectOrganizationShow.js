@@ -41,6 +41,7 @@ class ProjectOrganizationShow extends React.Component {
     this.startEditing = this.startEditing.bind(this)
     this.submitProjectEdits = this.submitProjectEdits.bind(this)
     this.submitItemQuantityReceivedEdits = this.submitItemQuantityReceivedEdits.bind(this)
+    this.updateItemQuantityReceivedField = this.updateItemQuantityReceivedField.bind(this)
   }
 
   projectsCall() {
@@ -135,13 +136,29 @@ class ProjectOrganizationShow extends React.Component {
   }
 
   submitItemQuantityReceivedEdits(event, editedItemQuantityReceivedData) {
-    this.setState({currentlyEditing: false})
-    axios.put(`http://localhost:8181/donations/${event.target.id}`)
+    event.preventDefault()
+    console.log("here")
+    axios.put(`http://localhost:8181/donations/${event.target.id}`, {donation: editedItemQuantityReceivedData})
     .then((response) => {
       console.log("*****************")
       console.log(response)
     })
     .catch((error) => {console.log('Error in updating the quantity received.', error)})
+  }
+
+  updateItemQuantityReceivedField(event) {
+    event.preventDefault()
+    const updatedId = parseInt(event.target.id, 10)
+    const updatedValue = parseInt(event.target.value, 10)
+    let donations = this.state.donations
+    donations.map((obj) => {
+      if(obj.id === updatedId){
+        return obj.quantity_received = updatedValue
+      } else {
+        return obj
+      }
+    })
+    this.setState({donations})
   }
 
   render() {
@@ -197,8 +214,8 @@ class ProjectOrganizationShow extends React.Component {
         </div>
 
         <div className="donations-list-container">
-          {this.state.donations.map((item) =>
-            <div className="item-row">
+          {this.state.donations.map((item, index) =>
+            <div className="item-row" key={index}>
               <button className="remove-item-button" id={item.id} onClick={this.removeItemButton} >
                 Remove
               </button>
@@ -206,7 +223,18 @@ class ProjectOrganizationShow extends React.Component {
               <span>
                 Item: {item.item} |
                 Quantity Requested: {item.quantity_requested} |
-                Quantity Received: {item.quantity_received}
+                Quantity Received:
+                <form
+                  className="update-quantity-form"
+                  id={item.id}
+                  onSubmit={(e) => this.submitItemQuantityReceivedEdits(e, this.state.donations[index])}
+                >
+                  <input id={item.id} onChange={this.updateItemQuantityReceivedField} type="number" value={item.quantity_received} />
+
+                  <button className="update-quantity-button">
+                    Update
+                  </button>
+                </form>
               </span>
             </div>
           )}
