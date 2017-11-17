@@ -2,6 +2,8 @@ import React from 'react';
 import { Redirect } from 'react-router'
 import axios from 'axios';
 
+import * as FontAwesome from 'react-icons/lib/fa';
+
 class DonorRegistration extends React.Component {
   constructor(props){
     super(props);
@@ -83,43 +85,64 @@ class DonorRegistration extends React.Component {
   render() {
     if (this.props.auth_token !== null) { return <Redirect to="/donors"/> }
     return (
-      <div>
-        <h2>Donor Registration</h2>
+      <div className="registration-container">
+        <h2 className="donor-registration-text">Donor Registration</h2>
         <form onSubmit= {this.handleSubmit}>
-          <input
-            placeholder= {'Enter first name'}
-            type="text"
-            value={this.state.first_name}
-            onChange={this.handleFirstNameChange} >
-          </input>
-          <input
-            placeholder='Enter last name'
-            type="text"
-            value={this.state.last_name}
-            onChange={this.handleLastNameChange} >
-          </input>
-          <input
-            placeholder='Enter your zipcode'
-            type="integer"
-            value={this.state.zipcode}
-            onChange={this.handleZipcodeChange} >
-          </input>
-          <input
-            placeholder='Enter email'
-            type="email"
-            value={this.state.email}
-            onChange={this.handleEmailChange} >
-          </input>
-          <input
-            placeholder ='Enter password'
-            type="password"
-            value={this.state.password}
-            onChange={this.handlePasswordChange} >
-          </input>
+          <p>
+            <FontAwesome.FaUser />
+              <input
+                className="input-text"
+                placeholder= {'Enter first name'}
+                type="text"
+                value={this.state.first_name}
+                onChange={this.handleFirstNameChange} >
+              </input>
+          </p>
+          <p>
+            <FontAwesome.FaUser />
+              <input
+                className="input-text"
+                placeholder='Enter last name'
+                type="text"
+                value={this.state.last_name}
+                onChange={this.handleLastNameChange} >
+              </input>
+          </p>
+          <p>
+            <FontAwesome.FaMapMarker />
+              <input
+                className="input-text"
+                placeholder='Enter zipcode'
+                type="integer"
+                value={this.state.zipcode}
+                onChange={this.handleZipcodeChange} >
+              </input>
+          </p>
+          <p>
+            <FontAwesome.FaEnvelope />
+              <input
+                className="input-text"
+                placeholder='Enter email'
+                type="email"
+                value={this.state.email}
+                onChange={this.handleEmailChange} >
+              </input>
+          </p>
+          <p>
+            <FontAwesome.FaKey />
+              <input
+                className="input-text"
+                placeholder ='Enter password'
+                type="password"
+                value={this.state.password}
+                onChange={this.handlePasswordChange} >
+              </input>
+          </p>
           <button
+            className="submit-button"
             type='submit'
             disabled={!this.state.email}>
-            <a href={ '/donors'}>Submit</a>
+            <a className="submit-text" href={ '/donors'}>Register</a>
           </button>
         </form>
       </div>
@@ -127,4 +150,4 @@ class DonorRegistration extends React.Component {
   }
 }
 
-export default DonorRegistration
+export default DonorRegistration;
