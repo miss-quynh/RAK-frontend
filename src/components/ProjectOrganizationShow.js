@@ -39,7 +39,8 @@ class ProjectOrganizationShow extends React.Component {
     this.updateDonationTypeInput = this.updateDonationTypeInput.bind(this)
     this.removeItemButton = this.removeItemButton.bind(this)
     this.startEditing = this.startEditing.bind(this)
-    this.submitEdits = this.submitEdits.bind(this)
+    this.submitProjectEdits = this.submitProjectEdits.bind(this)
+    this.submitItemQuantityReceivedEdits = this.submitItemQuantityReceivedEdits.bind(this)
   }
 
   projectsCall() {
@@ -123,7 +124,7 @@ class ProjectOrganizationShow extends React.Component {
     this.setState({currentlyEditing: true})
   }
 
-  submitEdits(editedProjectData) {
+  submitProjectEdits(editedProjectData) {
     this.setState({currentlyEditing: false})
     axios.put(`http://localhost:8181/projects/${this.props.match.params.project_id}`, { project: editedProjectData })
     .then((response) => {
@@ -131,6 +132,16 @@ class ProjectOrganizationShow extends React.Component {
       this.setState({newProjectInfo})
     })
     .catch((error) => {console.log('Error in updating the project.', error)})
+  }
+
+  submitItemQuantityReceivedEdits(event, editedItemQuantityReceivedData) {
+    this.setState({currentlyEditing: false})
+    axios.put(`http://localhost:8181/donations/${event.target.id}`)
+    .then((response) => {
+      console.log("*****************")
+      console.log(response)
+    })
+    .catch((error) => {console.log('Error in updating the quantity received.', error)})
   }
 
   render() {
@@ -145,7 +156,7 @@ class ProjectOrganizationShow extends React.Component {
             <ProjectEdit
               newProjectInfo={this.state.newProjectInfo}
               project_id={this.props.match.params.project_id}
-              submitEdits={this.submitEdits}
+              submitProjectEdits={this.submitProjectEdits}
             />
           :
             <div>

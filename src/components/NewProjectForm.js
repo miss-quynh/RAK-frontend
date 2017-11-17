@@ -15,7 +15,8 @@ class NewProjectForm extends React.Component {
         city: '',
         state: '',
         zip_code: '',
-        description: ''
+        description: '',
+        event: 'Miscellaneous'
       },
       formSubmitted: false,
       createdProjectId: null
@@ -23,6 +24,7 @@ class NewProjectForm extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.prepareProjectParams = this.prepareProjectParams.bind(this);
   }
 
   handleChange(event, fieldName) {
@@ -31,13 +33,23 @@ class NewProjectForm extends React.Component {
     this.setState({newProjectForm});
   }
 
+  prepareProjectParams(){
+    const project = {
+      projectParams: this.state.newProjectForm
+    }
+    delete project.projectParams.event
+    return project.projectParams
+  }
+
   handleSubmit(event) {
+    const that = this
     event.preventDefault()
-    axios.post('http://localhost:8181/projects', {project: this.state.newProjectForm, organization_id: this.props.organizationId})
+    axios.post('http://localhost:8181/projects', {event: this.state.newProjectForm.event, organization_id: this.props.organizationId, project: this.prepareProjectParams()})
     .then(({data}) => {
       const newProjectForm = Object.assign({}, {...this.state.newProjectForm}, data)
       this.setState({newProjectForm, formSubmitted: true})
     })
+    .catch((error) => {console.log('Error in creating a new project.', error)})
   }
 
   render() {
@@ -72,6 +84,10 @@ class NewProjectForm extends React.Component {
           <label>
             Description:
             <input type="text" value={this.state.newProjectForm.description} onChange={(e) => this.handleChange(e, "description")} />
+          </label>
+          <label>
+            Event:
+            <input type="text" value={this.state.newProjectForm.event} onChange={(e) => this.handleChange(e, "event")} />
           </label>
           <input type="submit" value="Create New Project" />
         </form>
