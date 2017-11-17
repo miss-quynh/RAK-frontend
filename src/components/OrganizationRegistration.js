@@ -199,8 +199,8 @@ class OrganizationRegistration extends React.Component {
   }
 
   errorsConditional(){
-
-    if (this.state.errors.length > 0) {
+    console.log(this.state.errors)
+    if (this.state.errors != []) {
       return (
         <ul>
         {this.state.errors.map(error =>

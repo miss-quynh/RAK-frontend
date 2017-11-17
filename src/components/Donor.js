@@ -93,7 +93,7 @@ class Donor extends React.Component {
         <div className="donor-view-list-container">
           <ul>
             { this.state["projects"].map((project) =>
-              <li><Project projectInfo={project}/></li>
+              <li className="list-item"><Project projectInfo={project}/></li>
             )}
           </ul>
         </div>
@@ -104,7 +104,7 @@ class Donor extends React.Component {
         <div className="donor-view-list-container">
           <ul>
             { this.state["organizations"].map((organization) =>
-              <li><OrganizationDonor orgInfo={organization}/></li>
+              <li className="list-item"><OrganizationDonor orgInfo={organization}/></li>
             )}
           </ul>
         </div>
@@ -121,13 +121,15 @@ class Donor extends React.Component {
         value={this.state.filters.categories}
         onChange={this.categoriesChanged} >
           {this.state.filterOptions.categories.map(category =>
-            <label><Checkbox value={category}/>{category}</label>
+            <div className="checkbox-element">
+              <label><Checkbox value={category}/>{category}</label>
+            </div>
           )}
       </CheckboxGroup>
     )}
     if (this.state.filterView === 'Location') {
       return (
-        <label><input type="text" value={this.state.filters.zipcode} onChange={this.locationChanged} placeholder="Zip Code" /></label>
+        <label>Zipcode:  <input type="text" value={this.state.filters.zipcode} onChange={this.locationChanged} placeholder="Zip Code" /></label>
       )
     }
     if (this.state.filterView === 'Event') {
@@ -137,7 +139,9 @@ class Donor extends React.Component {
         value={this.state.filters.events}
         onChange={this.eventsChanged} >
           {this.state.filterOptions.events.map(event =>
-            <label><Checkbox value={event}/>{event}</label>
+            <div className="checkbox-element">
+              <label><Checkbox  value={event}/>{event}</label>
+            </div>
           )}
       </CheckboxGroup>
       )
@@ -149,7 +153,9 @@ class Donor extends React.Component {
         value={this.state.filters['donation_type']}
         onChange={this.donationTypeChanged} >
           {this.state.filterOptions['donation_type'].map(donationType =>
-            <label><Checkbox value={donationType}/>{donationType}</label>
+            <div className="checkbox-element">
+              <label><Checkbox value={donationType}/>{donationType}</label>
+            </div>
           )}
       </CheckboxGroup>
       )
@@ -205,22 +211,22 @@ class Donor extends React.Component {
   render() {
     if(this.props.auth_token === null) { return <Redirect to="/donors/login"/> }
     return (
-      <div>
+      <div className="donor-container">
         <div className="proj-org-btn-container">
-          <button className="tab" onClick={this.handleProjectsClick}>Projects</button>
-          <button className="tab" onClick={this.handleOrganizationsClick}>Organizations</button>
+          <button className="proj-org-button" onClick={this.handleProjectsClick}>Projects</button>
+          <button className="proj-org-button" onClick={this.handleOrganizationsClick}>Organizations</button>
         </div>
         <div className="filter-container">
-          <button onClick={ () => this.handleFilterClick('Category')}>Category</button>
-          <button onClick={ () => this.handleFilterClick('Location')}>Location</button>
-          <button onClick={ () => this.handleFilterClick('Event')}>Event</button>
-          <button onClick={ () => this.handleFilterClick('Type of Donation')}>Donation Type</button>
-          <button onClick={this.handleFilterSubmit}>Search</button>
+          <button className="filter-ops" onClick={ () => this.handleFilterClick('Category')}>Category</button>
+          <button className="filter-ops" onClick={ () => this.handleFilterClick('Location')}>Location</button>
+          <button className="filter-ops" onClick={ () => this.handleFilterClick('Event')}>Event</button>
+          <button className="filter-ops" onClick={ () => this.handleFilterClick('Type of Donation')}>Donation Type</button>
+          <button className="search-button" onClick={this.handleFilterSubmit}>Search</button>
         </div>
         <div className="filter-categories">
           {this.filterConditional()}
         </div>
-        <div>
+        <div className="proj-contanier">
           {this.conditionalTabShow()}
         </div>
       </div>

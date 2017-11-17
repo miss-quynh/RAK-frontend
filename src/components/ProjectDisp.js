@@ -27,9 +27,9 @@ class ProjectDisp extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="project-display">
         <div className="project-info">
-          <h2>{this.state.projectInfo["project_name"]}</h2>
+          <h2 className="project-title-disp">{this.state.projectInfo["project_name"]}</h2>
           {this.state.items.map((item) =>
             <Item itemInfo={item}/>
           )}
