@@ -42,3 +42,35 @@ Random acts of Kindness (RAK) is a mobile-first web application where trusted or
 - How to run the test suite 
 - Services (job queues, cache servers, search engines, etc.) 
 - Deployment instructions
+
+## Deploy from Command Line
+> Download and Install the Heroku CLI with homebrew
+
+`$ brew install heroku/brew/heroku`
+
+If you haven't already, log in to your Heroku account and follow the prompts to create a new SSH public key.
+
+`$ heroku login`
+ 
+If you already have the repository cloned on your local machine, pull latest commits from development branch first.
+
+`git pull origin development`
+
+*or*
+
+If you do not have it, clone the repository. Use Git to clone rak-backend's source code to your local machine.
+
+
+`$ heroku git:clone -a rak-frontend`
+
+`$ cd rak-backend`
+
+Deploy your changes to Heroku
+
+`$ git push heroku development:master`
+
+*NOTE:* The command above will deploy the development branch on git to the master branch on Hreoku.
+
+To view logs in the terminal, run
+
+`$ heroku logs -t --app rak-frontend`
