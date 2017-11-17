@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
-import { Button, Input, Icon, Card, CardTitle, Row, Col } from 'react-materialize';
 
 import './App.css';
 import './Home.css';
