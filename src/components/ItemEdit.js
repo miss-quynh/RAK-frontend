@@ -14,12 +14,16 @@ class ItemEdit extends React.Component {
   }
 
   updateField(event, fieldName) {
-    this.setState({ projectInfo: {[fieldName]: event.target.value }})
+    this.setState({ quantity_received: {[fieldName]: event.target.value }})
   }
 
   render() {
     return(
-
+      <div className="edit-quantity-received-container">
+        <form>
+          <input onChange={(e) => this.updateField(e, "quantity_received")} type="number" value={this.state.quantity_received} />
+        </form>
+      </div>
     )
   }
 
