@@ -21,12 +21,14 @@ class Organization extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`http://localhost:8181/organizations/${this.props.match.params.id}`, {
+    const currentContext = this
+    fetch(`http://localhost:8181/organizations/${currentContext.props.match.params.id}`, {
       method: 'GET'
     })
     .then(response => response.json())
     .then(data => {
-      this.setState({ projects: data.projects, name: data.organization.organization_name, mission_statement: data.organization.mission_statement, logo: data.organization.organization_logo })
+      console.log(data)
+      currentContext.setState({ projects: data.projects, name: data.organization.organization_name, mission_statement: data.organization.mission_statement, logo: data.organization.organization_logo })
     })
   }
 
