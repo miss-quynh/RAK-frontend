@@ -28,7 +28,7 @@ class ProjectEdit extends React.Component {
     return(
       <div className="project-edit-container">
         <div className="project-edit">
-          <form onSubmit={(e) => this.props.submitEdits(this.state.projectInfo)} className="project-edit-form">
+          <form onSubmit={(e) => this.props.submitProjectEdits(this.state.projectInfo)} className="project-edit-form">
             <input onChange={(e) => this.updateField(e, "project_name")} type="text" value={this.state.projectInfo.project_name} />
             <input onChange={(e) => this.updateField(e, "street_address")} type="text" value={this.state.projectInfo.street_address} />
             <input onChange={(e) => this.updateField(e, "city")} type="text" value={this.state.projectInfo.city} />
