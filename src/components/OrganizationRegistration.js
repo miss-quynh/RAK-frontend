@@ -94,13 +94,14 @@ class OrganizationRegistration extends React.Component {
     if(!this.state.validEIN){
       return(
         <form onSubmit={this.handleEINSubmit}>
-          <label>Employer Identification Number: </label>
+          <label className="identification-number-text">Employer Identification Number: </label>
           <input
+            className="input-text"
             placeholder='XX-XXXXXX'
             type="text"
             value={this.state.EIN}
             onChange={this.handleEINChange} />
-          <input type="submit" />
+          <input className="submit-button submit-text" type="submit" value="Continue Registration"/>
         </form>
     )}
   }
@@ -139,44 +140,58 @@ class OrganizationRegistration extends React.Component {
   registrationData(){
     if (this.state.validEIN) {
       return(
-        <div>
+        <div className="registration-container">
           <form onSubmit={this.handleOrgSubmit}>
-            <h5>IEN: {this.state.orgData.tax_code}</h5>
-            <label>Name</label>
-            <input
-              type="text"
-              value={this.state.orgData.organization_name}
-              onChange={(e) => this.handleChange('organization_name', e)}/>
-            <label>Category</label>
-            <select onChange={(e) => this.handleChange('category', e)}>
-              <option>Select a category</option>
-              {this.state.categories.map( function (category) {
-                return <option value={category}>{category}</option>
-                })
-              }
-            </select><br/>
-            <label>Mission Statement</label>
-            <input
-              type="text"
-              size="100"
-              value={this.state.orgData.mission_statement}
-              onChange={(e) => this.handleChange('mission_statement', e)}/><br/>
-            <label>Email</label>
-            <input
-              type="email"
-              value={this.state.orgData.email}
-              onChange={(e) => this.handleChange('email', e)}/>
-            <label>Password</label>
-            <input
-              type="password"
-              value={this.state.orgData.password}
-              onChange={(e) => this.handleChange('password', e)}/>
-              <div>
-              <label>Upload Photo</label><br/>
+            <label className="identification-number-text">Employer Identification Number: {this.state.orgData.tax_code}</label>
+            <p>
+              <label className="label-text">Name</label>
+              <input
+                className="input-field"
+                type="text"
+                value={this.state.orgData.organization_name}
+                onChange={(e) => this.handleChange('organization_name', e)}/>
+            </p>
+            <p>
+              <label className="label-text">Category</label>
+              <select className="select-menu" onChange={(e) => this.handleChange('category', e)}>
+                <option className="select-menu">Select a category</option>
+                {this.state.categories.map( function (category) {
+                  return <option className="select-menu" value={category}>{category}</option>
+                  })
+                }
+              </select>
+            </p>
+            <p>
+              <label className="label-text">Mission Statement</label>
+              <input
+                className="large-input-field"
+                type="text"
+                size="100"
+                value={this.state.orgData.mission_statement}
+                onChange={(e) => this.handleChange('mission_statement', e)}/>
+            </p>
+            <p>
+              <label className="label-text">Email</label>
+              <input
+                className="input-field"
+                type="email"
+                value={this.state.orgData.email}
+                onChange={(e) => this.handleChange('email', e)}/>
+            </p>
+            <p>
+              <label className="label-text">Password</label>
+              <input
+                className="input-field"
+                type="password"
+                value={this.state.orgData.password}
+                onChange={(e) => this.handleChange('password', e)}/>
+            </p>
+            <div>
+              <label className="label-text">Upload Photo</label>
               <input type="file" onChange={this.handleImageUpdate}/>
               <img src={"http://localhost:8181" + this.state.imageUrl} />
-              </div>
-              <input type='submit'/>
+            </div>
+              <input className="submit-button submit-text" type='submit' value='Complete Registration'/>
               </form>
         </div>
       )
@@ -200,8 +215,8 @@ class OrganizationRegistration extends React.Component {
       return <Redirect to={`/organizations/${this.state.registrationSuccessfulID}`}/>
     } else {
         return (
-          <div>
-            <h2>Organization Registration</h2>
+          <div className="registration-container">
+            <h2 className="registration-text">Organization Registration</h2>
             {this.EINForm()}
             {this.registrationData()}
             {this.errorsConditional()}

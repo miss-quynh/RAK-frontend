@@ -32,7 +32,7 @@ class Logout extends React.Component {
     }
     return (
       <div>
-        <button onClick={this.handleLogout} >Logout</button>
+        <button className="logout-button" style={{float: 'right', padding: '7px 16px 16px'}} onClick={this.handleLogout} >Logout</button>
       </div>
     )
   }

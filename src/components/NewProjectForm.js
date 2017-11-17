@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Link, Redirect, Route, Switch } from 'react-ro
 import Project from './Project';
 import ProjectOrganizationShow from './ProjectOrganizationShow';
 
+import * as FontAwesome from 'react-icons/lib/fa';
+
 class NewProjectForm extends React.Component {
 
   constructor() {
@@ -55,9 +57,11 @@ class NewProjectForm extends React.Component {
   render() {
     if(!this.props.displayNewProjectForm){
       return (
-        <button onClick={this.props.toggleProjectFormState}>
-          Create New Project
-        </button>
+        <div className="new-project-button-container">
+          <button className="new-project-button" onClick={this.props.toggleProjectFormState}>
+            <FontAwesome.FaPlus /> Create New Project
+          </button>
+        </div>
     )} else if(this.props.displayNewProjectForm && !this.state.formSubmitted) {
       return (
         <form onSubmit={this.handleSubmit}>

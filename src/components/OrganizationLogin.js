@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import { Redirect } from 'react-router'
+import { Redirect } from 'react-router';
 
+import * as FontAwesome from 'react-icons/lib/fa';
 
 class OrganizationLogin extends React.Component {
   constructor(props){
@@ -59,26 +60,36 @@ class OrganizationLogin extends React.Component {
       return <Redirect to={`/organizations/${this.state.id}`} />
     }
     return (
-      <div>
+      <div className="registration-container">
+        <h2 className="registration-text">Organization Login</h2>
         <form onSubmit = {this.handleSubmit}>
-          <label htmlFor = 'email'> {this.props.label} </label>
-          <input
-            placeholder = 'Enter email'
-            type = "email"
-            value = {this.state.email}
-            onChange = {this.handleEmailChange}>
-          </input>
-          <input
-            placeholder = 'Enter password'
-            type = "password"
-            value = {this.state.password}
-            onChange = {this.handlePasswordChange}>
-          </input>
-          <input type="submit" value="Login" />
+          <p>
+            <label htmlFor = 'email'> {this.props.label} </label>
+            <FontAwesome.FaEnvelope />
+            <input
+              className="input-text"
+              placeholder = 'Enter email'
+              type = "email"
+              value = {this.state.email}
+              onChange = {this.handleEmailChange}>
+            </input>
+          </p>
+          <p>
+            <FontAwesome.FaKey />
+            <input
+              className="input-text"
+              placeholder = 'Enter password'
+              type = "password"
+              value = {this.state.password}
+              onChange = {this.handlePasswordChange}>
+            </input>
+          </p>
+          <input className="submit-button submit-text" type="submit" value="Login" />
         </form>
-        <button>
-          <a href="/organizations/registration">Register</a>
-        </button>
+
+        <p className="message-one">Not registered?
+          <a className="message-two" href="/organizations/registration"> Create an account</a>
+        </p>
       </div>
       )
   }
