@@ -150,7 +150,7 @@ class Donor extends React.Component {
       return (
         <CheckboxGroup
         name="donationType"
-        value={this.state.filters['donation_type']}
+        value={this.state.filters['donationType']}
         onChange={this.donationTypeChanged} >
           {this.state.filterOptions['donation_type'].map(donationType =>
             <div className="checkbox-element">
