@@ -26,7 +26,7 @@ class Organization extends React.Component {
     })
     .then(response => response.json())
     .then(data => {
-      this.setState({ projects: data.projects, name: data.organization.organization_name, mission_statement: data.organization.mission_statement, logo: data.organization.organization_logo })
+      this.setState({ projects: data.projects, name: data.organization.organization_name, mission_statement: data.organization.mission_statement, logo: data.image_url })
     })
   }
 
@@ -36,18 +36,20 @@ class Organization extends React.Component {
     }));
   }
 
+
   render() {
     return (
       <div className="organization-show-container">
         <div className="organization-info">
           <div className="organization-logo">
-            <span>{this.state.logo}</span>
+            {this.state.logo && <img src={"http://localhost:8181" + this.state.logo } />}
           </div>
           <h1>
             <span className="organization-name-header">{this.state.name}</span>
           </h1>
 
           <p className="organization-mission-statement">
+
             {this.state.mission_statement}
           </p>
         </div>
