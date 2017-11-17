@@ -10,7 +10,7 @@ class Project extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="project-continer-donor">
         <h3 className="project-name"><Link to={`/projects/${this.props.projectInfo['id']}`}>{this.props.projectInfo["project_name"]}</Link></h3>
         <p className="project-description">{this.props.projectInfo["description"]}</p>
         <p className="project-location">{this.props.projectInfo["city"]} | {this.props.projectInfo["state"]}</p>

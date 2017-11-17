@@ -4,7 +4,7 @@ class OrganizationDonor extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="org-continer-donor">
         <h3>{this.props.orgInfo["organization_name"]}</h3>
         <p className="orgs-mission-statement">
           Mission Statement: {this.props.orgInfo["mission_statement"]}

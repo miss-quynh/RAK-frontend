@@ -5,6 +5,9 @@ import './App.css';
 import './Home.css';
 import './OrganizationShow.css';
 import './RegistrationForm.css';
+import './Donor.css';
+import './ProjectDisp.css';
+
 
 import Home from './components/Home';
 import Donor from './components/Donor';
