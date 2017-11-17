@@ -60,7 +60,7 @@ class DonorLogin extends React.Component {
     if(this.props.auth_token !== null) { return <Redirect to="/donors"/> }
     return (
       <div className="registration-container">
-        <h2 className="donor-registration-text">Donor Login</h2>
+        <h2 className="registration-text">Donor Login</h2>
         <form onSubmit={this.handleSubmit}>
           <p>
             <label htmlFor='email'> {this.props.label} </label>
@@ -83,7 +83,7 @@ class DonorLogin extends React.Component {
               onChange={this.handlePasswordChange} >
             </input>
           </p>
-          <input className="submit-button" type="submit" value="Login" />
+          <input className="submit-button submit-text" type="submit" value="Login" />
         </form>
 
         <p className="message-one">Not registered?
@@ -92,7 +92,7 @@ class DonorLogin extends React.Component {
               Continue as guest
           </button>
           <FontAwesome.FaEllipsisV />
-          <a className="message-two" href="/donors/registration">Create an account</a>
+          <a className="message-two" href="/donors/registration"> Create an account</a>
         </p>
       </div>
       )

@@ -86,7 +86,7 @@ class DonorRegistration extends React.Component {
     if (this.props.auth_token !== null) { return <Redirect to="/donors"/> }
     return (
       <div className="registration-container">
-        <h2 className="donor-registration-text">Donor Registration</h2>
+        <h2 className="registration-text">Donor Registration</h2>
         <form onSubmit= {this.handleSubmit}>
           <p>
             <FontAwesome.FaUser />
