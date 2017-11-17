@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 
 import './App.css';
 import './Home.css';
+import './OrganizationShow.css';
+import './RegistrationForm.css';
+
 import Home from './components/Home';
 import Donor from './components/Donor';
 import Organization from './components/Organization';
@@ -46,10 +49,10 @@ class App extends React.Component {
       <Router>
         <div>
 
-          <header className="navigation-bar">
-            <Link className="navigation-text" to="/"><h1>RÄK</h1></Link>
+          <div className="navigation-bar">
+            <Link className="navigation-text" to="/">RÄK</Link>
             <Logout updateAuthToken={this.updateAuthToken} auth_token={this.state.auth_token} />
-          </header>
+          </div>
 
           <Switch>
             <Route exact path="/" component={Home} />
