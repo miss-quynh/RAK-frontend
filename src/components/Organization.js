@@ -42,34 +42,44 @@ class Organization extends React.Component {
   render() {
     return (
       <div className="organization-show-container">
-        <div className="organization-info">
+        <div className="organization-container">
           <div className="organization-logo">
             {this.state.logo && <img src={"http://localhost:8181" + this.state.logo } />}
           </div>
-          <h1>
+
+          <div className="organization-info">
             <span className="organization-name-header">{this.state.name}</span>
-          </h1>
+            <p className="organization-mission-statement">
+              {this.state.mission_statement}
+            </p>
+          </div>
 
-          <p className="organization-mission-statement">
-
-            {this.state.mission_statement}
-          </p>
         </div>
 
-        <NewProjectForm
-          organizationId={this.props.match.params.id}
-          displayNewProjectForm={this.state.displayNewProjectForm}
-          toggleProjectFormState={this.toggleProjectFormState}
-        />
+        <div className="projects-list-container">
+          <NewProjectForm
+            organizationId={this.props.match.params.id}
+            displayNewProjectForm={this.state.displayNewProjectForm}
+            toggleProjectFormState={this.toggleProjectFormState}
+          />
 
-        <ul>
-          {this.state.projects.map((project) => {
-            return (
-              <li><Link to={`/projects/${project.id}`}>{project.project_name}</Link></li>
-            )
-          }
-          )}
-        </ul>
+          <ul>
+            {this.state.projects.map((project) => {
+              return (
+                <div className="projects-container">
+                  <div className="projects-list-one">
+                    <li><Link className="project-link-one" to={`/projects/${project.id}`}>{project.project_name}</Link></li>
+                  </div>
+                {/* sample for demo only !!!! */}
+                  <div className="projects-list-two">
+                    <li className="project-link-two">Turkey Trot</li>
+                  </div>
+                </div>
+              )
+            }
+            )}
+          </ul>
+        </div>
       </div>
     );
   }
