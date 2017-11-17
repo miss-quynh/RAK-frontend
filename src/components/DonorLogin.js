@@ -14,6 +14,7 @@ class DonorLogin extends React.Component {
     this.handleEmailChange = this.handleEmailChange.bind(this)
     this.handlePasswordChange = this.handlePasswordChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.loginAsGuest = this.loginAsGuest.bind(this)
 
   }
 
@@ -22,7 +23,7 @@ class DonorLogin extends React.Component {
       email: event.target.value})
   }
 
-    handlePasswordChange(event) {
+  handlePasswordChange(event) {
     this.setState({
       password: event.target.value})
   }
@@ -31,11 +32,11 @@ class DonorLogin extends React.Component {
     event.preventDefault();
     var currentContext = this;
 
-     var postData = JSON.stringify({
+    var postData = JSON.stringify({
       auth: {
         email: this.state.email, password: this.state.password
-        }
-      });
+      }
+    });
 
     this.serverRequest = axios.post("http://localhost:8181/donor_token", postData, {
       headers: {
@@ -48,6 +49,10 @@ class DonorLogin extends React.Component {
       currentContext.props.updateAuthToken(response.data.jwt)
     })
     .catch(error => console.log("Donor Login Error: ", error.response))
+  }
+
+  loginAsGuest () {
+    this.props.updateAuthToken('guest')
   }
 
   render() {
@@ -68,22 +73,15 @@ class DonorLogin extends React.Component {
             value={this.state.password}
             onChange={this.handlePasswordChange} >
           </input>
-          <button
-            type = 'Guest'
-            disabled = {!this.state.email}>
-            <a href={ '/donors'}>Continue as guest</a>
-          </button>
-          <button
-            type = 'Register'
-            disabled = {!this.state.email}>
-            <a href={ '/donors/registration'}>Register</a>
-          </button>
-          <button
-            type='submit'
-            disabled={!this.state.email}>
-            <a href={ '/donors'}>Submit</a>
-          </button>
+          <input type="submit" value="Login" />
         </form>
+        <button
+          onClick={this.loginAsGuest}>
+            Continue as guest
+        </button>
+        <button>
+          <a href="/donors/registration">Register</a>
+        </button>
       </div>
       )
   }

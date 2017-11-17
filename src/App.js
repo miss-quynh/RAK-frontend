@@ -54,15 +54,20 @@ class App extends React.Component {
 
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/organizations/login" component={OrganizationLogin}/>
             <Route exact path="/organizations/:organization_id/projects/:project_id" component={ProjectOrganizationShow} />
             <Route path="/organizations/registration" component={OrganizationRegistration} />
-            <Route path="/organizations/:id" component={Organization} />
             <Route path="/projects/:id" component={ProjectDisp} />
             <Route exact path="/donors" render={(props) => (
               <Donor
                 {...props}
                 auth_token={this.state.auth_token}
+              />
+            )} />
+            <Route exact path="/organizations/login" render={(props) => (
+              <OrganizationLogin
+                {...props}
+                auth_token={this.state.auth_token}
+                updateAuthToken={this.updateAuthToken}
               />
             )} />
             <Route exact path="/donors/login" render={(props) => (
@@ -79,6 +84,7 @@ class App extends React.Component {
                 updateAuthToken={this.updateAuthToken}
               />
             )} />
+            <Route path="/organizations/:id" component={Organization} />
             <Route render={() => <h1>Page not found</h1>} />
           </Switch>
 
