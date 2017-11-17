@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import { Redirect } from 'react-router'
+import { Redirect } from 'react-router';
 
+import * as FontAwesome from 'react-icons/lib/fa';
 
 class DonorLogin extends React.Component {
   constructor(props){
@@ -58,30 +59,41 @@ class DonorLogin extends React.Component {
   render() {
     if(this.props.auth_token !== null) { return <Redirect to="/donors"/> }
     return (
-      <div>
+      <div className="registration-container">
+        <h2 className="donor-registration-text">Donor Login</h2>
         <form onSubmit={this.handleSubmit}>
-          <label htmlFor='email'> {this.props.label} </label>
-          <input
-            placeholder='Enter email'
-            type="email"
-            value={this.state.email}
-            onChange={this.handleEmailChange} >
-          </input>
-          <input
-            placeholder='Enter password'
-            type="password"
-            value={this.state.password}
-            onChange={this.handlePasswordChange} >
-          </input>
-          <input type="submit" value="Login" />
+          <p>
+            <label htmlFor='email'> {this.props.label} </label>
+            <FontAwesome.FaEnvelope />
+            <input
+              className="input-text"
+              placeholder='Enter email'
+              type="email"
+              value={this.state.email}
+              onChange={this.handleEmailChange} >
+            </input>
+          </p>
+          <p>
+            <FontAwesome.FaKey />
+            <input
+              className="input-text"
+              placeholder='Enter password'
+              type="password"
+              value={this.state.password}
+              onChange={this.handlePasswordChange} >
+            </input>
+          </p>
+          <input className="submit-button" type="submit" value="Login" />
         </form>
-        <button
-          onClick={this.loginAsGuest}>
-            Continue as guest
-        </button>
-        <button>
-          <a href="/donors/registration">Register</a>
-        </button>
+
+        <p className="message-one">Not registered?
+          <button className="message-two"
+            onClick={this.loginAsGuest}>
+              Continue as guest
+          </button>
+          <FontAwesome.FaEllipsisV />
+          <a className="message-two" href="/donors/registration">Create an account</a>
+        </p>
       </div>
       )
   }
