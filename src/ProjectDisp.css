@@ -42,3 +42,7 @@
   font-family: Arial;
   font-family: 'Crimson Text', serif;
 }
+
+.project-name {
+  text-decoration: none;
+}
