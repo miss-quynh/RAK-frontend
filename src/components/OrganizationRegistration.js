@@ -27,6 +27,7 @@ class OrganizationRegistration extends React.Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleOrgSubmit = this.handleOrgSubmit.bind(this)
     this.errorsConditional = this.errorsConditional.bind(this)
+    this.handleImageUpdate = this.handleImageUpdate.bind(this)
   }
 
   categoriesCall(){
@@ -82,6 +83,13 @@ class OrganizationRegistration extends React.Component {
     this.setState({orgData})
   }
 
+  handleImageUpdate(event) {
+    let file = event.target.files[0]
+    this.setState({
+      orgData: Object.assign({}, this.state.orgData, {avatar: file})
+    })
+  }
+
   EINForm() {
     if(!this.state.validEIN){
       return(
@@ -98,9 +106,20 @@ class OrganizationRegistration extends React.Component {
   }
 
   convertStateToOrgCreate() {
-    const params = {organization: this.state.orgData, category: this.state.orgData['category']}
-    delete params.organization['category']
-    return params
+    // const params = {organization: this.state.orgData, category: this.state.orgData['category']}
+    // delete params.organization['category']
+    // return params
+
+    let data = new FormData()
+    data.append("organization[avatar]", this.state.orgData.avatar)
+    data.append("organization[organization_name]", this.state.orgData.organization_name)
+    data.append("organization[tax_code]", this.state.orgData.tax_code)
+    data.append("organization[mission_statement]", this.state.orgData.mission_statement)
+    data.append("organization[email]", this.state.orgData.email)
+    data.append("organization[password]", this.state.orgData.password)
+    data.append("category", this.state.orgData.category)
+
+    return data
   }
 
   handleOrgSubmit(event) {
@@ -152,8 +171,13 @@ class OrganizationRegistration extends React.Component {
               type="password"
               value={this.state.orgData.password}
               onChange={(e) => this.handleChange('password', e)}/>
-            <input type='submit'/>
-          </form>
+              <div>
+              <label>Upload Photo</label><br/>
+              <input type="file" onChange={this.handleImageUpdate}/>
+              <img src={"http://localhost:8181" + this.state.imageUrl} />
+              </div>
+              <input type='submit'/>
+              </form>
         </div>
       )
     }
