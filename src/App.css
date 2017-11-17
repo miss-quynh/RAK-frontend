@@ -1,3 +1,7 @@
+body {
+  background-color: #ECEFF1;
+}
+
 .App {
   text-align: center;
 }
@@ -31,7 +35,8 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: rgba(135, 206, 235, 0.1);
+  /*background-color: rgba(135, 206, 235, 0.1);*/
+  background-color: rgba(0, 0, 139, 0.9);
   border: 1px solid #e7e7e7;
 }
 
@@ -43,8 +48,9 @@
   text-decoration: none;
   font-family: serif;
   border-right: 1px dotted #bbb;
+  color: #FFFFFF;
 }
 
 .navigation-text:hover {
-  background-color: #87CEEB;
+  background-color: #ECEFF1;
 }
