@@ -1,0 +1,64 @@
+.project-organization-display-container {
+  padding: 20px;
+  font-family: 'Crimson Text', serif;
+  font-size: 1em;
+}
+
+.project-edit-container {
+  padding: 20px;
+  font-family: 'Crimson Text', serif;
+  font-size: 1em;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+input[type=text], input[type=number] {
+  width: 80%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: vertical;
+  margin-bottom: 5px;
+}
+
+.update-project-button {
+  width: 80%;
+  padding: 5px 6% 8px 6%;
+  margin: 0 0 35px 0;
+  background: rgb(247, 247, 247);
+  border: 1px solid rgba(147, 184, 189,0.8);
+  box-shadow:
+    0pt 2px 5px rgba(105, 108, 109,  0.7),
+    0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+  border-radius: 5px;
+}
+
+.donation-type-drop-down {
+  --styled-select-placeholder__color: #999;
+  --styled-select__color: white;
+  --styled-select__background-color: #3a45e2;
+  --styled-select__border-color: blue;
+  --styled-select__border-width: 3px;
+  --styled-select__border-radius: 5px;
+
+  --styled-select-menu-outer__margin: 10px 0 0 0;
+  --styled-select-menu-outer__padding: 0;
+  --styled-select-menu-outer__background-color: #3a45e2;
+  --styled-select-menu-outer__border-color: blue;
+  --styled-select-menu-outer__border-style: solid;
+  --styled-select-menu-outer__border-width: 3px;
+
+  --styled-select-option__background-color: #212ede;
+
+  --styled-select-option__color--focused: #eee;
+  --styled-select-option__background-color--focused: #050d83;
+
+  --styled-select-option__color--selected: #eee;
+  --styled-select-option__background-color--selected: #212ede;
+}
