@@ -3,6 +3,8 @@ import axios from 'axios';
 import Item from './Item';
 import ProjectEdit from './ProjectEdit';
 
+import * as FontAwesome from 'react-icons/lib/fa';
+
 class ProjectOrganizationShow extends React.Component {
 
   constructor(props) {
@@ -178,7 +180,7 @@ class ProjectOrganizationShow extends React.Component {
           :
             <div>
               <button className="edit-button" onClick={this.startEditing}>
-                Edit
+                <FontAwesome.FaEdit />
               </button>
               <span>
                 <p>{this.state.newProjectInfo.project_name}</p>
@@ -195,7 +197,7 @@ class ProjectOrganizationShow extends React.Component {
         <div className="add-donation-container">
           <form className="add-donation-form">
             <button className="add-item-button" onClick={this.handleSubmit}>
-              Add
+              <FontAwesome.FaPlus />
             </button>
 
             <select className="donation-type-drop-down" onChange={this.updateDonationTypeInput}>
@@ -206,10 +208,11 @@ class ProjectOrganizationShow extends React.Component {
                 )
               })}
             </select>
-
+            <p>
             <input onChange={this.updateItemNameInput} type="text" placeholder="Item needed" value={this.state.itemNameInput} />
             <input onChange={this.updateQuantityRequested} type="number" placeholder="Quantity needed" value={this.state.newDonation.quantity_requested} />
             <input onChange={this.updateQuantityReceived}type="number" placeholder="Quantity received" value={this.state.newDonation.quantity_received} />
+            </p>
           </form>
         </div>
 
@@ -217,7 +220,7 @@ class ProjectOrganizationShow extends React.Component {
           {this.state.donations.map((item, index) =>
             <div className="item-row" key={index}>
               <button className="remove-item-button" id={item.id} onClick={this.removeItemButton} >
-                Remove
+              <FontAwesome.FaTrash />
               </button>
 
               <span>
@@ -232,7 +235,7 @@ class ProjectOrganizationShow extends React.Component {
                   <input id={item.id} onChange={this.updateItemQuantityReceivedField} type="number" value={item.quantity_received} />
 
                   <button className="update-quantity-button">
-                    Update
+                    <FontAwesome.FaEdit />
                   </button>
                 </form>
               </span>

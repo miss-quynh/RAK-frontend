@@ -7,6 +7,7 @@ import './OrganizationShow.css';
 import './RegistrationForm.css';
 import './Donor.css';
 import './ProjectDisp.css';
+import './Project.css';
 
 
 import Home from './components/Home';
